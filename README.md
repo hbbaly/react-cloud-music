@@ -2,6 +2,17 @@
 
 hooks出现很久了，之前只是看过文档，没有进行实战，刚好在掘金看到了[react-cloud-music](https://github.com/sanyuan0704/react-cloud-music)的项目, 觉得还不错，就买了下来，学习一下, 加入了自己的理解和书写习惯，巩固和深入学习Hooks s。
 
+## react相关练习项目
+[React+React-Router+redux+styled-components简单仿简书](https://github.com/hbbaly/react-practice/tree/master/demo/jianshu)
+
+[React入门](https://github.com/hbbaly/react-practice)
+
+[React-Router入门](https://github.com/hbbaly/react-practice/tree/master/router)
+
+[redux简单入门](https://github.com/hbbaly/react-redux)
+
+[styled-components入门](https://github.com/hbbaly/styled-components-learn)
+
 ## 安装脚手架
 
 ```bash
