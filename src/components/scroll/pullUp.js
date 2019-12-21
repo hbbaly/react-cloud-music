@@ -1,8 +1,8 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef } from "react";
 import PropTypes from "prop-types";
 import { PullUpContainer } from "./style";
-const PullUpCom = forwardRef((props) => {
-  const { isPullUpLoad } = props
+const PullUpCom = forwardRef(props => {
+  const { isPullUpLoad } = props;
   const isPullUpLoadDom = !isPullUpLoad ? (
     <div className="before-trigger">
       <span className="pullup-txt">Pull up and load more</span>
@@ -11,17 +11,13 @@ const PullUpCom = forwardRef((props) => {
     <div className="after-trigger">
       <span className="pullup-txt">Loading...</span>
     </div>
-  )
-  return(
-    <PullUpContainer>
-      {isPullUpLoadDom}
-    </PullUpContainer>
   );
-})
+  return <PullUpContainer>{isPullUpLoadDom}</PullUpContainer>;
+});
 PullUpCom.defaultProps = {
   isPullUpLoad: false
-}
+};
 PullUpCom.PropTypes = {
-  isPullUpLoad: PropTypes.bool,
-}
-export default React.memo(PullUpCom)
+  isPullUpLoad: PropTypes.bool
+};
+export default React.memo(PullUpCom);

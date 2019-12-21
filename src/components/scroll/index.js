@@ -1,11 +1,17 @@
 import BetterScroll from "better-scroll";
 import PullDown from "@better-scroll/pull-down";
 import Pullup from "@better-scroll/pull-up";
-import React, { forwardRef, useState, useEffect, useRef, useImperativeHandle } from "react";
+import React, {
+  forwardRef,
+  useState,
+  useEffect,
+  useRef,
+  useImperativeHandle
+} from "react";
 import { ScrollWrapper } from "./style";
 import PropTypes from "prop-types";
-import PullDownCom from './pullDown'
-import PullUpDom from './pullUp'
+import PullDownCom from "./pullDown";
+import PullUpDom from "./pullUp";
 BetterScroll.use(PullDown);
 BetterScroll.use(Pullup);
 
@@ -113,30 +119,33 @@ const Scroll = forwardRef((props, ref) => {
   // 下啦判断
   // 向父组件暴漏方法
   useImperativeHandle(ref, () => ({
-        refresh () {
-          if (bScroll) {
-            bScroll.refresh ();
-            bScroll.scrollTo (0, 0);
-          }
-        },
-        // 给外界暴露 getBScroll 方法，提供 bs 实例
-        getBScroll () {
-          console.log('hbbb', bScroll)
-          if (bScroll) {
-            return bScroll;
-          }
-        }
-  }))
+    refresh() {
+      if (bScroll) {
+        bScroll.refresh();
+        bScroll.scrollTo(0, 0);
+      }
+    },
+    // 给外界暴露 getBScroll 方法，提供 bs 实例
+    getBScroll() {
+      console.log("hbbb", bScroll);
+      if (bScroll) {
+        return bScroll;
+      }
+    }
+  }));
   return (
-      <div>
-        <PullDownCom beforePullDown = {BeforePullDown} isPullingDown={IsPullingDown}/>
-        <ScrollWrapper ref={ScrollContainer}>
-          <div>
-            {props.children}
-            <PullUpDom isPullUpLoad = {IsPullUpLoad}/>
-          </div>
-        </ScrollWrapper>
-      </div>
+    <div>
+      <PullDownCom
+        beforePullDown={BeforePullDown}
+        isPullingDown={IsPullingDown}
+      />
+      <ScrollWrapper ref={ScrollContainer}>
+        <div>
+          {props.children}
+          <PullUpDom isPullUpLoad={IsPullUpLoad} />
+        </div>
+      </ScrollWrapper>
+    </div>
   );
 });
 Scroll.defaultProps = {
