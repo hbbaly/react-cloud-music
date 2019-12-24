@@ -47,7 +47,8 @@ const Scroll = forwardRef((props, ref) => {
     listenScrollEnd,
     listenBeforeScroll,
     pullDownRefresh,
-    pullUpLoad
+    pullUpLoad,
+    data
   } = props;
   const [BeforePullDown, setBeforePullDown] = useState(true);
   const [IsPullingDown, setIsPullingDown] = useState(false);
@@ -97,6 +98,7 @@ const Scroll = forwardRef((props, ref) => {
       });
     }
     if (pullUpLoad) {
+      console.log(bScroll);
       bScroll.on("pullingUp", async () => {
         console.log("上啦");
         setIsPullUpLoad(true);
@@ -114,7 +116,7 @@ const Scroll = forwardRef((props, ref) => {
     return () => {
       bScroll.off("scroll");
     };
-  }, [bScroll]);
+  }, [bScroll, data]);
   // 判断bScroll是否存在，存在刷新
   // 下啦判断
   // 向父组件暴漏方法

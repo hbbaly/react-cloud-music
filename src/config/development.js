@@ -1,5 +1,5 @@
 export default {
   host: '',
   imgUrl: '',
-  api: 'api/'
+  api: '/api/'
 }

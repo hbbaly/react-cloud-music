@@ -2,7 +2,6 @@
 import axios from "axios";
 import qs from "qs";
 import config from "../config";
-console.log(config)
 axios.defaults.withCredentials = true;
 axios.interceptors.request.use(
   config => {
@@ -34,13 +33,13 @@ function checkStatus(response) {
       response.status === 401)
   ) {
     if (response.data.code === 200) {
-      return response;
+      return response.data;
       // 如果不需要除了data之外的数据，可以直接 return response.data
     }
     if (response.status * 1 === 401) {
-      return response;
+      return response.data;
     }
-    return response;
+    return response.data;
   }
   // 异常状态下，把错误信息返回去
   return {

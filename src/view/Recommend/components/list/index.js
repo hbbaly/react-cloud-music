@@ -1,15 +1,22 @@
-import React, {useRef} from "react";
+import React, { useRef } from "react";
 import { ListWrapper, ListItem, List } from "./style";
 import { getCount } from "../../../../utils/base";
-import Scroll from '../../../../components/scroll'
+import Scroll from "../../../../components/scroll";
 function RecommendList(props) {
-  const listScroll = useRef()
+  const listScroll = useRef();
+  const { recommendList } = props
   return (
     <ListWrapper>
       <h1 className="title"> 推荐歌单 </h1>
-      <Scroll ref={listScroll} listenScroll={true} pullDownRefresh={{threshold: 70, stop: 60}} pullUpLoad={{threshold: 40}}>
+      <Scroll
+        ref={listScroll}
+        data={recommendList}
+        listenScroll={true}
+        pullDownRefresh={{ threshold: 70, stop: 60 }}
+        pullUpLoad={{ threshold: 40 }}
+      >
         <List>
-          {props.recommendList.map((item, index) => (
+          {recommendList.map((item, index) => (
             <ListItem key={item.id + index}>
               <div className="img_wrapper">
                 <div className="decorate"></div>

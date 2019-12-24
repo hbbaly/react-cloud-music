@@ -1,22 +1,22 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "swiper/css/swiper.css";
 import Swiper from "swiper";
-import { SliderContainer } from './style'
+import { SliderContainer } from "./style";
 
 function Slider(props) {
   const { bannerList } = props;
-  const [slider, setSlider] = useState(null)
+  const [slider, setSlider] = useState(null);
   useEffect(() => {
     if (bannerList.length && !slider) {
-      let slider = new Swiper (".slider-container", {
+      let slider = new Swiper(".slider-container", {
         loop: true,
         autoplay: true,
         autoplayDisableOnInteraction: false,
-        pagination: {el:'.swiper-pagination'}
-      })
+        pagination: { el: ".swiper-pagination" }
+      });
       setSlider(slider);
     }
-  }, [bannerList, slider])
+  }, [bannerList, slider]);
 
   return (
     <SliderContainer>
