@@ -1,6 +1,6 @@
-import BetterScroll from "better-scroll";
-// import PullDownPlugin from "@better-scroll/pull-down";
-// import PullUpPlugin from "@better-scroll/pull-up";
+import BetterScroll from "@better-scroll/core";
+import PullDownPlugin from "@better-scroll/pull-down";
+import PullUpPlugin from "@better-scroll/pull-up";
 import React, {
   forwardRef,
   useState,
@@ -12,8 +12,8 @@ import { ScrollWrapper } from "./style";
 import PropTypes from "prop-types";
 import PullDownCom from "./pullDown";
 import PullUpDom from "./pullUp";
-// BetterScroll.use(PullDownPlugin);
-// BetterScroll.use(PullUpPlugin);
+BetterScroll.use(PullDownPlugin);
+BetterScroll.use(PullUpPlugin);
 
 const Scroll = forwardRef((props, ref) => {
   const DIRECTION_H = "horizontal";
@@ -41,7 +41,7 @@ const Scroll = forwardRef((props, ref) => {
     return () => {
       setBScroll(null);
     };
-  }, []);
+  }, [ScrollContainer]);
   const {
     listenScroll,
     listenScrollEnd,
@@ -58,6 +58,7 @@ const Scroll = forwardRef((props, ref) => {
     if (!bScroll) return;
     if (bScroll) {
       bScroll.refresh();
+
     }
     if (listenScroll) {
       // probeType为0无效
@@ -75,6 +76,8 @@ const Scroll = forwardRef((props, ref) => {
     }
     if (pullDownRefresh) {
       bScroll.on("pullingDown", async () => {
+        console.log('下啦刷新');
+        
         // 必须要写，不然不能出发下一次
         setBeforePullDown(false);
         setIsPullingDown(true);
@@ -100,7 +103,8 @@ const Scroll = forwardRef((props, ref) => {
       });
     }
     if (pullUpLoad) {
-      console.log(pullUpLoad, 'pullUpLoad');
+      console.log('进入了');
+      
       bScroll.on("pullingUp", async () => {
         console.log("上啦");
         setIsPullUpLoad(true);
@@ -119,6 +123,7 @@ const Scroll = forwardRef((props, ref) => {
       bScroll.off("scroll");
     };
   }, [bScroll, data, onScroll]);
+
   // 判断bScroll是否存在，存在刷新
   // 下啦判断
   // 向父组件暴漏方法
@@ -153,8 +158,8 @@ const Scroll = forwardRef((props, ref) => {
   );
 });
 Scroll.defaultProps = {
-  click: false,
-  probeType: 2,
+  click: true,
+  probeType: 3,
   startX: 0,
   startY: 0,
   listenScroll: false,
@@ -163,7 +168,7 @@ Scroll.defaultProps = {
   enabled: false,
   direction: "vertical", // 'horizontal'
   pullDownRefresh: null,
-  pullUpLoad: null,
+  pullUpLoad: false,
   refreshDelay: 200,
   refresh: null,
   destroy: null,
