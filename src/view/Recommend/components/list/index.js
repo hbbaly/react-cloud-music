@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import LazyLoad, { forceCheck } from "react-lazyload";
 import { ListWrapper, ListItem, List } from "./style";
 import { getCount } from "../../../../utils/base";
 import Scroll from "../../../../components/scroll";
@@ -12,6 +13,7 @@ function RecommendList(props) {
         ref={listScroll}
         data={recommendList}
         listenScroll={true}
+        onScroll={forceCheck}
         pullDownRefresh={{ threshold: 70, stop: 60 }}
         pullUpLoad={{ threshold: 40 }}
       >
@@ -21,12 +23,14 @@ function RecommendList(props) {
               <div className="img_wrapper">
                 <div className="decorate"></div>
                 {/* 加此参数可以减小请求的图片资源大小 */}
-                <img
-                  src={item.picUrl + "?param=300x300"}
-                  width="100%"
-                  height="100%"
-                  alt="music"
-                />
+                <LazyLoad placeholder={<img width="100%" height="100%" src={require ('../../../../assets/images/music.png')} alt="music"/>}>
+                  <img
+                    src={item.picUrl + "?param=300x300"}
+                    width="100%"
+                    height="100%"
+                    alt="music"
+                  />
+                </LazyLoad>
                 <div className="play_count">
                   <i className="iconfont play">&#xe885;</i>
                   <span className="count">{getCount(item.playCount)}</span>

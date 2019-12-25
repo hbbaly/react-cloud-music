@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
 import PropTypes from "prop-types";
 import { PullUpContainer } from "./style";
-const PullUpCom = forwardRef(props => {
+const PullUpCom = forwardRef((props, ref) => {
   const { isPullUpLoad } = props;
   const isPullUpLoadDom = !isPullUpLoad ? (
     <div className="before-trigger">

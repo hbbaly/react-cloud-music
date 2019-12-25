@@ -1,4 +1,4 @@
-"use strict";
+
 import axios from "axios";
 import qs from "qs";
 import config from "../config";

@@ -55,6 +55,7 @@
     "react-app-polyfill": "^1.0.5",
     "react-dev-utils": "^10.0.0",
     "react-dom": "^16.12.0",
+    "react-lazyload": "^2.6.5",
     "react-redux": "^7.1.3",
     "react-router": "^5.1.2",
     "react-router-config": "^5.1.1",

@@ -1,6 +1,6 @@
 import BetterScroll from "better-scroll";
-import PullDown from "@better-scroll/pull-down";
-import Pullup from "@better-scroll/pull-up";
+// import PullDownPlugin from "@better-scroll/pull-down";
+// import PullUpPlugin from "@better-scroll/pull-up";
 import React, {
   forwardRef,
   useState,
@@ -12,8 +12,8 @@ import { ScrollWrapper } from "./style";
 import PropTypes from "prop-types";
 import PullDownCom from "./pullDown";
 import PullUpDom from "./pullUp";
-BetterScroll.use(PullDown);
-BetterScroll.use(Pullup);
+// BetterScroll.use(PullDownPlugin);
+// BetterScroll.use(PullUpPlugin);
 
 const Scroll = forwardRef((props, ref) => {
   const DIRECTION_H = "horizontal";
@@ -23,7 +23,7 @@ const Scroll = forwardRef((props, ref) => {
   const [bScroll, setBScroll] = useState();
   useEffect(() => {
     if (!ScrollContainer) {
-      return;
+      return false;
     }
     let options = {
       probeType,
@@ -48,7 +48,8 @@ const Scroll = forwardRef((props, ref) => {
     listenBeforeScroll,
     pullDownRefresh,
     pullUpLoad,
-    data
+    data,
+    onScroll
   } = props;
   const [BeforePullDown, setBeforePullDown] = useState(true);
   const [IsPullingDown, setIsPullingDown] = useState(false);
@@ -61,7 +62,8 @@ const Scroll = forwardRef((props, ref) => {
     if (listenScroll) {
       // probeType为0无效
       bScroll.on("scroll", pos => {
-        // 监听滚动
+        // 监听滚动, 这个是图片懒加载的操作
+        onScroll(pos)
       });
     }
     if (listenScrollEnd) {
@@ -98,7 +100,7 @@ const Scroll = forwardRef((props, ref) => {
       });
     }
     if (pullUpLoad) {
-      console.log(bScroll);
+      console.log(pullUpLoad, 'pullUpLoad');
       bScroll.on("pullingUp", async () => {
         console.log("上啦");
         setIsPullUpLoad(true);
@@ -116,7 +118,7 @@ const Scroll = forwardRef((props, ref) => {
     return () => {
       bScroll.off("scroll");
     };
-  }, [bScroll, data]);
+  }, [bScroll, data, onScroll]);
   // 判断bScroll是否存在，存在刷新
   // 下啦判断
   // 向父组件暴漏方法
@@ -160,14 +162,16 @@ Scroll.defaultProps = {
   listenScrollEnd: false,
   enabled: false,
   direction: "vertical", // 'horizontal'
-  pullDownRefresh: false,
-  pullUpLoad: false,
+  pullDownRefresh: null,
+  pullUpLoad: null,
   refreshDelay: 200,
   refresh: null,
   destroy: null,
-  freeScroll: false
+  freeScroll: false,
+  onScroll: null,
+  data: []
 };
-Scroll.PropTypes = {
+Scroll.propTypes = {
   click: PropTypes.bool,
   probeType: PropTypes.number,
   listenScroll: PropTypes.bool,
@@ -178,10 +182,12 @@ Scroll.PropTypes = {
   listenScrollEnd: PropTypes.bool,
   enabled: PropTypes.bool,
   direction: PropTypes.string,
-  pullDownRefresh: PropTypes.bool | PropTypes.object,
-  pullUpLoad: PropTypes.object | PropTypes.bool,
+  pullDownRefresh: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+  pullUpLoad: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   refreshDelay: PropTypes.number,
   refresh: PropTypes.func,
-  destroy: PropTypes.func
+  destroy: PropTypes.func,
+  onScroll: PropTypes.func,
+  data: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
 };
 export default Scroll;
