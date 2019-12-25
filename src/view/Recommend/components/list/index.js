@@ -6,7 +6,7 @@ import Scroll from "../../../../components/scroll";
 function RecommendList(props) {
   const listScroll = useRef();
   const { recommendList } = props
-  const [list, setList] = useState(null)
+  const [list, setList] = useState([])
   useEffect(() => {
     setList(recommendList)
     return () => {

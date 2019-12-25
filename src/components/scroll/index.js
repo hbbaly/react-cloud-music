@@ -1,29 +1,33 @@
-import BetterScroll from "@better-scroll/core";
-import PullDownPlugin from "@better-scroll/pull-down";
-import PullUpPlugin from "@better-scroll/pull-up";
+import BetterScroll from '@better-scroll/core'
+import PullDownPlugin from '@better-scroll/pull-down'
+import PullUpPlugin from '@better-scroll/pull-up'
 import React, {
   forwardRef,
   useState,
   useEffect,
   useRef,
   useImperativeHandle
-} from "react";
-import { ScrollWrapper } from "./style";
-import PropTypes from "prop-types";
-import PullDownCom from "./pullDown";
-import PullUpDom from "./pullUp";
-BetterScroll.use(PullDownPlugin);
-BetterScroll.use(PullUpPlugin);
+} from 'react'
+import PropTypes from 'prop-types'
+
+import { ScrollWrapper } from './style'
+import PullDownCom from './pullDown'
+import PullUpDom from './pullUp'
+BetterScroll.use(PullDownPlugin)
+BetterScroll.use(PullUpPlugin)
 
 const Scroll = forwardRef((props, ref) => {
-  const DIRECTION_H = "horizontal";
-  const DIRECTION_V = "vertical";
-  const ScrollContainer = useRef();
-  const { click, probeType, startX, freeScroll, startY, direction } = props;
-  const [bScroll, setBScroll] = useState();
+  const DIRECTION_H = 'horizontal'
+  const DIRECTION_V = 'vertical'
+
+  const { click, probeType, startX, freeScroll, startY, direction } = props
+
+  const ScrollContainer = useRef()
+  const [bScroll, setBScroll] = useState()
+
   useEffect(() => {
     if (!ScrollContainer) {
-      return false;
+      return false
     }
     let options = {
       probeType,
@@ -35,13 +39,14 @@ const Scroll = forwardRef((props, ref) => {
       startY,
       startX,
       freeScroll
-    };
-    let scroll = new BetterScroll(ScrollContainer.current, options);
-    setBScroll(scroll);
+    }
+    let scroll = new BetterScroll(ScrollContainer.current, options)
+    setBScroll(scroll)
     return () => {
-      setBScroll(null);
-    };
-  }, [ScrollContainer]);
+      setBScroll(null)
+    }
+  }, [ScrollContainer])
+
   const {
     listenScroll,
     listenScrollEnd,
@@ -50,98 +55,114 @@ const Scroll = forwardRef((props, ref) => {
     pullUpLoad,
     data,
     onScroll
-  } = props;
-  const [BeforePullDown, setBeforePullDown] = useState(true);
-  const [IsPullingDown, setIsPullingDown] = useState(false);
-  const [IsPullUpLoad, setIsPullUpLoad] = useState(false);
-  useEffect(() => {
-    if (!bScroll) return;
-    if (bScroll) {
-      bScroll.refresh();
+  } = props
+  const [BeforePullDown, setBeforePullDown] = useState(true)
+  const [IsPullingDown, setIsPullingDown] = useState(false)
+  const [IsPullUpLoad, setIsPullUpLoad] = useState(false)
 
-    }
+  //监听滚动事项
+  useEffect(() => {
+    if (!bScroll) return
+    bScroll.refresh()
     if (listenScroll) {
       // probeType为0无效
-      bScroll.on("scroll", pos => {
+      bScroll.on('scroll', pos => {
         // 监听滚动, 这个是图片懒加载的操作
         onScroll(pos)
-      });
+      })
     }
     if (listenScrollEnd) {
-      bScroll.on("scrollEnd", pos => {});
+      bScroll.on('scrollEnd', pos => {})
     }
     if (listenBeforeScroll) {
-      bScroll.on("beforeScrollStart", () => {});
-      bScroll.on("scrollStart", () => {});
+      bScroll.on('beforeScrollStart', () => {})
+      bScroll.on('scrollStart', () => {})
     }
+
+    return () => {
+      bScroll.off('scroll')
+    }
+  }, [bScroll, onScroll])
+
+  //下啦刷新
+  useEffect(() => {
+    if (!bScroll) return
+    bScroll.refresh()
+
     if (pullDownRefresh) {
-      bScroll.on("pullingDown", async () => {
-        console.log('下啦刷新');
-        
+      bScroll.on('pullingDown', async () => {
+        console.log('下啦刷新')
+
         // 必须要写，不然不能出发下一次
-        setBeforePullDown(false);
-        setIsPullingDown(true);
+        setBeforePullDown(false)
+        setIsPullingDown(true)
 
         await new Promise(resolve => {
           setTimeout(() => {
-            resolve();
-          }, 500);
-        });
+            resolve()
+          }, 500)
+        })
 
-        setIsPullingDown(false);
+        setIsPullingDown(false)
 
         await new Promise(resolve => {
           setTimeout(() => {
-            bScroll.finishPullDown();
-            resolve();
-          }, 600);
-        });
+            bScroll.finishPullDown()
+            resolve()
+          }, 600)
+        })
         setTimeout(() => {
-          setBeforePullDown(true);
-          bScroll.refresh();
-        }, 800);
-      });
-    }
-    if (pullUpLoad) {
-      console.log('进入了');
-      
-      bScroll.on("pullingUp", async () => {
-        console.log("上啦");
-        setIsPullUpLoad(true);
-
-        await new Promise(resolve => {
-          setTimeout(() => {
-            resolve();
-          }, 500);
-        });
-        bScroll.finishPullUp();
-        bScroll.refresh();
-        setIsPullUpLoad(false);
-      });
+          setBeforePullDown(true)
+          bScroll.refresh()
+        }, 800)
+      })
     }
     return () => {
-      bScroll.off("scroll");
-    };
-  }, [bScroll, data, onScroll]);
+      bScroll.off('pullingDown')
+    }
+  }, [data.length])
 
-  // 判断bScroll是否存在，存在刷新
-  // 下啦判断
+  // 上啦加载
+  useEffect(() => {
+    if (!bScroll) return
+    bScroll.refresh()
+
+    if (pullUpLoad) {
+      bScroll.on('pullingUp', async () => {
+        console.log('上啦')
+        setIsPullUpLoad(true)
+
+        await new Promise(resolve => {
+          setTimeout(() => {
+            resolve()
+          }, 500)
+        })
+        bScroll.finishPullUp()
+        bScroll.refresh()
+        setIsPullUpLoad(false)
+      })
+    }
+    return () => {
+      bScroll.off('pullingUp')
+    }
+  }, [data.length])
+
   // 向父组件暴漏方法
   useImperativeHandle(ref, () => ({
     refresh() {
       if (bScroll) {
-        bScroll.refresh();
-        bScroll.scrollTo(0, 0);
+        bScroll.refresh()
+        bScroll.scrollTo(0, 0)
       }
     },
     // 给外界暴露 getBScroll 方法，提供 bs 实例
     getBScroll() {
-      console.log("hbbb", bScroll);
+      console.log('hbbb', bScroll)
       if (bScroll) {
-        return bScroll;
+        return bScroll
       }
     }
-  }));
+  }))
   return (
     <div>
       <PullDownCom
@@ -155,8 +176,8 @@ const Scroll = forwardRef((props, ref) => {
         </div>
       </ScrollWrapper>
     </div>
-  );
-});
+  )
+})
 Scroll.defaultProps = {
   click: true,
   probeType: 3,
@@ -166,7 +187,7 @@ Scroll.defaultProps = {
   listenBeforeScroll: false,
   listenScrollEnd: false,
   enabled: false,
-  direction: "vertical", // 'horizontal'
+  direction: 'vertical', // 'horizontal'
   pullDownRefresh: null,
   pullUpLoad: false,
   refreshDelay: 200,
@@ -175,7 +196,7 @@ Scroll.defaultProps = {
   freeScroll: false,
   onScroll: null,
   data: []
-};
+}
 Scroll.propTypes = {
   click: PropTypes.bool,
   probeType: PropTypes.number,
@@ -193,6 +214,6 @@ Scroll.propTypes = {
   refresh: PropTypes.func,
   destroy: PropTypes.func,
   onScroll: PropTypes.func,
-  data: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-};
-export default Scroll;
+  data: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
+}
+export default Scroll
