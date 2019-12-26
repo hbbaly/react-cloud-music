@@ -55,8 +55,7 @@ const Scroll = forwardRef((props, ref) => {
     pullDownRefresh,
     pullUpLoad,
     data,
-    onScroll,
-    wrapperStyle
+    onScroll
   } = props
   const [BeforePullDown, setBeforePullDown] = useState(true)
   const [IsPullingDown, setIsPullingDown] = useState(false)
