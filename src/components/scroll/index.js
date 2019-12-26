@@ -21,7 +21,7 @@ const Scroll = forwardRef((props, ref) => {
   const DIRECTION_H = 'horizontal'
   const DIRECTION_V = 'vertical'
 
-  const { click, probeType, startX, freeScroll, startY, direction } = props
+  const { click, probeType, startX, freeScroll, startY, direction, scrollWidth, scrollContent, scrollHeight } = props
 
   const ScrollContainer = useRef()
   const [bScroll, setBScroll] = useState()
@@ -55,7 +55,8 @@ const Scroll = forwardRef((props, ref) => {
     pullDownRefresh,
     pullUpLoad,
     data,
-    onScroll
+    onScroll,
+    wrapperStyle
   } = props
   const [BeforePullDown, setBeforePullDown] = useState(true)
   const [IsPullingDown, setIsPullingDown] = useState(false)
@@ -121,12 +122,13 @@ const Scroll = forwardRef((props, ref) => {
     return () => {
       bScroll.off('pullingDown')
     }
-  }, [data.length])
+  }, [bScroll, data.length])
+
 
   // 上啦加载
   useEffect(() => {
     if (!bScroll) return
-    bScroll.refresh()
+    if (bScroll) bScroll.refresh()
 
     if (pullUpLoad) {
       bScroll.on('pullingUp', async () => {
@@ -146,7 +148,7 @@ const Scroll = forwardRef((props, ref) => {
     return () => {
       bScroll.off('pullingUp')
     }
-  }, [data.length])
+  }, [bScroll, data.length])
 
   // 向父组件暴漏方法
   useImperativeHandle(ref, () => ({
@@ -164,22 +166,34 @@ const Scroll = forwardRef((props, ref) => {
       }
     }
   }))
-  
-  return (
-    <div>
-      <PullDownCom
-        beforePullDown={BeforePullDown}
-        isPullingDown={IsPullingDown}
-      />
-      <ScrollWrapper ref={ScrollContainer}>
-        <div>
-          {props.children}
-          <PullUpDom isPullUpLoad={IsPullUpLoad} />
-        </div>
-      </ScrollWrapper>
-    </div>
-  )
+  if (direction === DIRECTION_V) {
+    return (
+      <div>
+        <PullDownCom
+          beforePullDown={BeforePullDown}
+          isPullingDown={IsPullingDown}
+        />
+        <ScrollWrapper ref={ScrollContainer} style={{height:scrollHeight}}>
+          <div>
+            {props.children}
+            <PullUpDom isPullUpLoad={IsPullUpLoad} />
+          </div>
+        </ScrollWrapper>
+      </div>
+    )
+  } else {
+    return(
+      <div>
+        <ScrollWrapper style={{width:scrollWidth}} ref={ScrollContainer} >
+          <div style={{display: 'flex',width: scrollContent}} >
+            {props.children}
+          </div>
+        </ScrollWrapper>
+      </div>
+    )
+  }
 })
+
 Scroll.defaultProps = {
   click: true,
   probeType: 3,
@@ -197,7 +211,10 @@ Scroll.defaultProps = {
   destroy: null,
   freeScroll: false,
   onScroll: null,
-  data: []
+  data: [],
+  scrollContent: '100%',
+  scrollWidth: '100%',
+  scrollHeight: '100%'
 }
 Scroll.propTypes = {
   click: PropTypes.bool,
@@ -216,6 +233,10 @@ Scroll.propTypes = {
   refresh: PropTypes.func,
   destroy: PropTypes.func,
   onScroll: PropTypes.func,
-  data: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
+  data: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  wrapperStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+  scrollWidth: PropTypes.string,
+  scrollContent: PropTypes.string,
+  scrollHeight: PropTypes.string,
 }
 export default Scroll

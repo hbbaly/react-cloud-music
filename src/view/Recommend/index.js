@@ -9,11 +9,13 @@ function Recommend(props) {
   const { requestBanner, requestRecommendSingers} = props
   useEffect(() => {
     Loading.open()
-    requestBanner()
-    requestRecommendSingers()
-    // Loading.close()
+    const requestData = async () => {
+      if (!bannerList.size) await requestBanner()
+      if (!recommendSingers.size) await requestRecommendSingers()
+      Loading.close()
+    }
+    requestData()
     return () => {
-      
     };
   }, [])
   return (

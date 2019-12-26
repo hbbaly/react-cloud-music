@@ -14,11 +14,13 @@ function RecommendList(props) {
       // cleanup
     }
   }, [recommendList])
-
+  
   return (
-    <ListWrapper>
+        
+    <ListWrapper >
       <h1 className="title"> 推荐歌单 </h1>
       <Scroll
+        scrollHeight='400px'
         ref={listScroll}
         data={list}
         listenScroll={true}
