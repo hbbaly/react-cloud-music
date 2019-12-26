@@ -3,12 +3,15 @@ import {connect} from 'react-redux'
 import Slider from './components/slider'
 import RecommendList from './components/list'
 import store from './store'
+import Loading from '../../components/loading'
 function Recommend(props) {
   const { recommendSingers, bannerList } = props
   const { requestBanner, requestRecommendSingers} = props
   useEffect(() => {
+    Loading.open()
     requestBanner()
     requestRecommendSingers()
+    // Loading.close()
     return () => {
       
     };

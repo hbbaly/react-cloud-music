@@ -13,6 +13,7 @@ import PropTypes from 'prop-types'
 import { ScrollWrapper } from './style'
 import PullDownCom from './pullDown'
 import PullUpDom from './pullUp'
+
 BetterScroll.use(PullDownPlugin)
 BetterScroll.use(PullUpPlugin)
 
@@ -163,6 +164,7 @@ const Scroll = forwardRef((props, ref) => {
       }
     }
   }))
+  
   return (
     <div>
       <PullDownCom

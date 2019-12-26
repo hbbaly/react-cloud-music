@@ -1,18 +1,20 @@
-import React, { useRef, useState, useEffect } from "react";
-import LazyLoad, { forceCheck } from "react-lazyload";
-import { ListWrapper, ListItem, List } from "./style";
-import { getCount } from "../../../../utils/base";
-import Scroll from "../../../../components/scroll";
+import React, { useRef, useState, useEffect } from 'react'
+import LazyLoad, { forceCheck } from 'react-lazyload'
+import { ListWrapper, ListItem, List } from './style'
+import { getCount } from '../../../../utils/base'
+import Scroll from '../../../../components/scroll'
 function RecommendList(props) {
-  const listScroll = useRef();
+  const listScroll = useRef()
   const { recommendList } = props
   const [list, setList] = useState([])
+
   useEffect(() => {
     setList(recommendList)
     return () => {
       // cleanup
-    };
+    }
   }, [recommendList])
+
   return (
     <ListWrapper>
       <h1 className="title"> 推荐歌单 </h1>
@@ -30,9 +32,18 @@ function RecommendList(props) {
               <div className="img_wrapper">
                 <div className="decorate"></div>
                 {/* 加此参数可以减小请求的图片资源大小 */}
-                <LazyLoad placeholder={<img width="120" height="120" src={require ('../../../../assets/images/music.png')} alt="music"/>}>
+                <LazyLoad
+                  placeholder={
+                    <img
+                      width="120"
+                      height="120"
+                      src={require('../../../../assets/images/music.png')}
+                      alt="music"
+                    />
+                  }
+                >
                   <img
-                    src={item.picUrl + "?param=300x300"}
+                    src={item.picUrl + '?param=300x300'}
                     width="100%"
                     height="100%"
                     alt="music"
@@ -49,6 +60,6 @@ function RecommendList(props) {
         </List>
       </Scroll>
     </ListWrapper>
-  );
+  )
 }
-export default React.memo(RecommendList);
+export default React.memo(RecommendList)

@@ -910,3 +910,340 @@ export default React.memo(PullUpCom)
 ```
 
 这样Scroll组件就已经完成， 主要还是要熟悉[better-scroll](https://github.com/ustbhuangyi/better-scroll)才能对其进行各种各样的自定义样式。
+
+## 配置环境变量
+
+```bash
+cnpm i -D cross-env
+```
+
+```js
+// package.json
+"scripts": {
+    "start": "cross-env NODE_ENV=development node scripts/start.js",
+    "build": "cross-env NODE_ENV=production node scripts/build.js",
+    "test": "node scripts/test.js"
+  },
+```
+
+`config`文件夹内新建`default, index, development, production`文件
+配置相应的内容并导出
+
+`index.js`
+
+```js
+import developConfig  from './development'
+import prodConfig from './production'
+import defaultConfig from './default'
+
+const configEnv = process.env.NODE_ENV === 'development' ? developConfig : prodConfig
+const config = Object.assign(defaultConfig, configEnv)
+export default config
+```
+
+## 请求数据以及使用redux
+
+### axios封装
+
+```bash
+cnpm i -S axios qs
+```
+
+axios封装
+
+`utils/http.js`
+
+```js
+
+import axios from "axios";
+import qs from "qs";
+import config from "../config";
+axios.defaults.withCredentials = true;
+axios.interceptors.request.use(
+  config => {
+    // loading
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
+
+axios.interceptors.response.use(
+  response => {
+    return response;
+  },
+  error => {
+    return Promise.resolve(error.response);
+  }
+);
+
+function checkStatus(response) {
+  // loading
+  // 如果http状态码正常，则直接返回数据
+  if (
+    response &&
+    (response.status === 200 ||
+      response.status === 304 ||
+      response.status === 400 ||
+      response.status === 401)
+  ) {
+    if (response.data.code === 200) {
+      return response.data;
+      // 如果不需要除了data之外的数据，可以直接 return response.data
+    }
+    if (response.status * 1 === 401) {
+      return response.data;
+    }
+    return response.data;
+  }
+  // 异常状态下，把错误信息返回去
+  return {
+    status: -404,
+    msg: "网络异常"
+  };
+}
+
+function checkCode(res) {
+  // 如果code异常(这里已经包括网络错误，服务器错误，后端抛出的错误)，可以弹出一个错误提示，告诉用户
+  if (res.status === -404) {
+  }
+  if (res.data && !res.data.success) {
+  }
+  return res;
+}
+function postByToken(url, data, token) {
+  // let headers = {
+  //   "X-Requested-With": "XMLHttpRequest",
+  //   "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+  //   authorization: token
+  // };
+  return axios({
+    method: "post",
+    baseURL: config.api,
+    url,
+    data: qs.stringify(data),
+    timeout: 20000,
+    // headers
+  })
+    .then(response => {
+      return checkStatus(response);
+    })
+    .then(res => {
+      return checkCode(res);
+    });
+}
+export default {
+  post(url, data) {
+    return postByToken(url, data);
+  },
+  get(url, params) {
+    let headers = {
+        "X-Requested-With": "XMLHttpRequest",
+        "Content-Type": "application/json; charset=UTF-8",
+      };
+    return axios({
+      method: "get",
+      baseURL: config.api,
+      url,
+      params,
+      // get 请求时带的参数
+      timeout: 10000,
+      headers
+    })
+      .then(response => {
+        return checkStatus(response);
+      })
+      .then(res => {
+        return checkCode(res);
+      })
+      .catch(err => {
+        if (err) {
+        }
+      });
+  }
+};
+```
+
+这里只是最简单的封装， 后面有需求在完善
+
+
+## 跨域问题解决
+
+```bash
+cnpm i -D http-proxy-middleware
+```
+
+在src目录下新建`setupProxy.js`
+
+```js
+const proxy = require("http-proxy-middleware");
+module.exports = function(app) {
+  app.use(
+    proxy("/api", {
+      target: "http://localhost:3001/",
+      changeOrigin: true,
+      pathRewrite: {
+        '^/api': '' // 这样处理后，最终得到的接口路径为： http://localhost:3001/xxx
+      }
+    })
+  );
+}
+```
+`scripts/start.js` 中
+
+```js
+const devServer = new WebpackDevServer(compiler, serverConfig);
+// 在这里添加
+require('../src/setupProxy')(devServer);
+```
+
+这样跨域就完成了， **后台接口使用[网易云API](https://github.com/Binaryify/NeteaseCloudMusicApi)下载项目本地运行，记得改端口！！！**
+
+## 添加api
+
+`api`文件夹内recommend.js
+
+```js
+import http from '../utils/http'
+const getBannerList = () => {
+  return http.get('banner/get')
+}
+const getRecommendSingers = () => {
+  return http.get('/personalized')
+}
+export default {
+  getBannerList,
+  getRecommendSingers
+}
+```
+`index.js`
+
+```js
+import recommendApi from './recommend'
+
+export default {
+  recommendApi
+}
+```
+
+## redux
+
+在`Recommend文件夹下新建store文件夹`, 在其内新建`actionCreator, actionType, index.js,reducer`文件
+
+`actionType.js`
+
+```js
+const  GET_BANNER_LIST = 'getBannerList'
+const GET_RECOMMEND_SINGERS = 'getRecommendSingers'
+export default {
+  GET_BANNER_LIST,
+  GET_RECOMMEND_SINGERS
+}
+```
+
+`actionCreator.js`
+
+```js
+import actionType from './actionType'
+import Api from '../../../api'
+const getBannerList = (data) => ({type: actionType.GET_BANNER_LIST, data})
+const getRecommendSingers = (data) => ({type: actionType.GET_RECOMMEND_SINGERS, data})
+
+const requestBanner = () => {
+  return async dispatch => {
+    let res = await Api.recommendApi.getBannerList()
+    dispatch(getBannerList(res.banners))
+  }
+}
+const requestRecommendSingers = () => {
+  return async dispatch => {
+    let res = await Api.recommendApi.getRecommendSingers()
+    dispatch(getRecommendSingers(res.result))
+  }
+}
+export default {
+  requestBanner,
+  requestRecommendSingers
+}
+```
+
+`reducer.js`
+
+```js
+import ActionTypes from './actionType'
+import { fromJS } from 'immutable'
+
+const defaultValue = fromJS({
+  bannerList: [],
+  recommendSingers: []
+})
+
+const recommend = (state = defaultValue, action) => {
+  switch (action.type) {
+    case ActionTypes.GET_BANNER_LIST:
+      return state.set('bannerList',action.data)
+    case ActionTypes.GET_RECOMMEND_SINGERS:
+      return state.set('recommendSingers',action.data)
+    default:
+      return state
+  }
+}
+export default recommend
+```
+
+`index.js`
+
+```js
+import actionCreator from './actionCreator'
+import actionType from './actionType'
+
+export default {
+  actionCreator,
+  actionType
+}
+```
+
+
+`Recommend/index.js`
+
+```js
+import React, {useEffect} from 'react'
+import {connect} from 'react-redux' // 引入connect
+import Slider from './components/slider'
+import RecommendList from './components/list'
+import store from './store'  // 引入store
+function Recommend(props) {
+  const { recommendSingers, bannerList } = props
+  const { requestBanner, requestRecommendSingers} = props
+  useEffect(() => {
+    // 请求数据
+    requestBanner()
+    requestRecommendSingers()
+    return () => {
+      
+    };
+  }, [])
+  return (
+    <div>
+      <Slider bannerList={bannerList} />
+      <RecommendList recommendList={recommendSingers} />
+    </div>
+  )
+}
+const mapStateToProps = (state) => {
+  return ({
+    bannerList: state.get('recommend').get('bannerList'),
+    recommendSingers: state.get('recommend').get('recommendSingers')
+  })
+}
+const mapDispatchToProps = (dispatch) => ({
+  requestBanner(){
+    dispatch(store.actionCreator.requestBanner())
+  },
+  requestRecommendSingers(){
+    dispatch(store.actionCreator.requestRecommendSingers())
+  }
+})
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Recommend))
+```
