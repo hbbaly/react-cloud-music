@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import style from "../../../../assets/global";
 
 export const ScrollWrapper = styled.div`
   display: flex;
@@ -22,7 +21,7 @@ export const ScrollContent = styled.div`
     width: auto;
     padding-left: 10px;
   }
-  &.selected{
-    color: ${style["font-color"]};
+  .selected{
+    color: #d44439;
   }
 `

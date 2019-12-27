@@ -4,7 +4,7 @@ import Scroll from '../../../../components/scroll'
 import { ScrollWrapper, ScrollTitle, ScrollContent } from './style'
 
 function HorizontalScroll(props) {
-  const { title, list } = props
+  const { title, list, handleClick, chooseKey } = props
   const scrollTitle = useRef()
   const scrollCon = useRef()
 
@@ -43,7 +43,7 @@ function HorizontalScroll(props) {
           data={list}
         >
           {list.map((item, index) => (
-            <div key={index} className="scroll-item">
+            <div key={index} className={chooseKey === item.key ? 'scroll-item selected': 'scroll-item'} onClick={() => handleClick(item.key)}>
               {item.name}
             </div>
           ))}
@@ -54,10 +54,14 @@ function HorizontalScroll(props) {
 }
 HorizontalScroll.defaultProps = {
   title: '',
-  list: []
+  list: [],
+  handleClick: null,
+  chooseKey: ''
 }
 HorizontalScroll.propTypes = {
   title: PropTypes.string,
-  list: PropTypes.array
+  list: PropTypes.array,
+  handleClick:PropTypes.func,
+  chooseKey: PropTypes.string
 }
 export default HorizontalScroll
