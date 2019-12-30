@@ -4,13 +4,15 @@ import Scroll from '../../../../components/scroll'
 import { List, ListItem } from './style'
 function SingersList(props) {
   const { singerList, scrollHeight } = props
-
+  const { requestPullUp, requestPullDown } = props
   return (
     <Scroll
       scrollHeight={scrollHeight}
       data={singerList}
       pullDownRefresh={{ threshold: 70, stop: 60 }}
       pullUpLoad={true}
+      requestPullDown={requestPullDown}
+      requestPullUp = {requestPullUp}
     >
       <List>
         {singerList.map((item, index) => {
@@ -34,10 +36,14 @@ function SingersList(props) {
 }
 SingersList.defaultProps = {
   singerList: [],
-  scrollHeight: ''
+  scrollHeight: '',
+  requestPullDown: null,
+  requestPullUp: null
 }
 SingersList.propTypes = {
   singerList: PropTypes.array,
-  scrollHeight: PropTypes.string
+  scrollHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  requestPullDown: PropTypes.func,
+  requestPullUp: PropTypes.func
 }
 export default React.memo(SingersList)

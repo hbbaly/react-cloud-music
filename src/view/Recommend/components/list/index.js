@@ -25,8 +25,8 @@ function RecommendList(props) {
         data={list}
         listenScroll={true}
         onScroll={forceCheck}
-        pullDownRefresh={{ threshold: 70, stop: 60 }}
-        pullUpLoad={true}
+        // pullDownRefresh={{ threshold: 70, stop: 60 }}
+        // pullUpLoad={true}
       >
         <List>
           {recommendList.map((item, index) => (

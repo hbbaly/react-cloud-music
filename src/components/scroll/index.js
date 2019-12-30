@@ -57,6 +57,7 @@ const Scroll = forwardRef((props, ref) => {
     data,
     onScroll
   } = props
+  const {requestPullDown, requestPullUp } = props
   const [BeforePullDown, setBeforePullDown] = useState(true)
   const [IsPullingDown, setIsPullingDown] = useState(false)
   const [IsPullUpLoad, setIsPullUpLoad] = useState(false)
@@ -98,11 +99,7 @@ const Scroll = forwardRef((props, ref) => {
         setBeforePullDown(false)
         setIsPullingDown(true)
 
-        await new Promise(resolve => {
-          setTimeout(() => {
-            resolve()
-          }, 500)
-        })
+        await requestPullDown()
 
         setIsPullingDown(false)
 
@@ -134,11 +131,8 @@ const Scroll = forwardRef((props, ref) => {
         console.log('上啦')
         setIsPullUpLoad(true)
 
-        await new Promise(resolve => {
-          setTimeout(() => {
-            resolve()
-          }, 500)
-        })
+        await requestPullUp()
+        
         bScroll.finishPullUp()
         bScroll.refresh()
         setIsPullUpLoad(false)
@@ -167,28 +161,25 @@ const Scroll = forwardRef((props, ref) => {
   }))
   if (direction === DIRECTION_V) {
     return (
-      <div>
-        <PullDownCom
-          beforePullDown={BeforePullDown}
-          isPullingDown={IsPullingDown}
-        />
         <ScrollWrapper ref={ScrollContainer} style={{height:scrollHeight}}>
           <div>
+          <PullDownCom
+            beforePullDown={BeforePullDown}
+            isPullingDown={IsPullingDown}
+          />
             {props.children}
-            <PullUpDom isPullUpLoad={IsPullUpLoad} />
-          </div>
+              <PullUpDom isPullUpLoad={IsPullUpLoad} />
+            </div>
+          
         </ScrollWrapper>
-      </div>
     )
   } else {
     return(
-      <div>
         <ScrollWrapper style={{width:scrollWidth}} ref={ScrollContainer} >
           <div style={{display: 'flex',width: scrollContent}} >
             {props.children}
           </div>
         </ScrollWrapper>
-      </div>
     )
   }
 })
@@ -234,8 +225,10 @@ Scroll.propTypes = {
   onScroll: PropTypes.func,
   data: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   wrapperStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-  scrollWidth: PropTypes.string,
-  scrollContent: PropTypes.string,
-  scrollHeight: PropTypes.string,
+  scrollWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  scrollContent: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  scrollHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  requestPullDown: PropTypes.func,
+  requestPullUp: PropTypes.func
 }
 export default Scroll

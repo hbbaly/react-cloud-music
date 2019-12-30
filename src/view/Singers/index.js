@@ -5,21 +5,23 @@ import { categoryTypes, alphaTypes } from './singersData'
 import store from './store'
 import SingersList from './components/singerList'
 function Singers(props) {
-  const { requestSingerList } = props
-  const { singerList } = props
-  const [chooseKey, setChooseKey] = useState('')
-  const [chooseLetterKey, setChooseLetterKey] = useState('')
+ 
 
+  const { requestSingerList, setCategory, setLetter, pullDownRefresh} = props
+  const { singerList, offset, category, letter, limit } = props
+
+  
   useEffect(() => {
     requestSingerList()
     return () => {
       // cleanup
     }
-  }, [])
+  }, [category, letter])
 
   const [singerHeight, setSingerHeight] = useState(0)
   const catContainer = useRef()
   const letterContainer = useRef()
+
   useEffect(() => {
     // effect
     let allHeight =
@@ -34,38 +36,60 @@ function Singers(props) {
       // cleanup
     }
   }, [])
+  function requestUp() { 
+    // setOffset(offset + 1)
+   }
+  // 拉动垂立
   return (
     <div>
       <div className="hot-category" ref={catContainer}>
         <HorizontalScroll
           list={categoryTypes}
           title="热门维修"
-          handleClick={key => setChooseKey(key)}
-          chooseKey={chooseKey}
+          handleClick={key => setCategory(key)}
+          chooseKey={category}
         />
       </div>
       <div className="first-letter" ref={letterContainer}>
         <HorizontalScroll
           list={alphaTypes}
           title="首字母"
-          handleClick={key => setChooseLetterKey(key)}
-          chooseKey={chooseLetterKey}
+          handleClick={key => setLetter(key)}
+          chooseKey={letter}
         />
       </div>
       <div className="singer-wrapper">
-        <SingersList scrollHeight={singerHeight} singerList={singerList} />
+        <SingersList scrollHeight={singerHeight} singerList={singerList} requestPullDown = {() => pullDownRefresh({limit, cat: `${category}`, initial: `${letter}`, offset: `${offset}`})} requestPullUp = {requestUp} />
       </div>
     </div>
   )
 }
 const mapStateToProps = state => {
   return {
-    singerList: state.get('singer').get('singerList')
+    singerList: state.getIn(['singer', 'singerList']),
+    offset: state.getIn(['singer','offset']),
+    category: state.getIn(['singer', 'category']),
+    letter: state.getIn(['singer', 'letter'])
   }
 }
 const mapDispatchToProps = dispatch => ({
+
   requestSingerList(data) {
     dispatch(store.actionCreator.requestSingerList(data))
-  }
+  },
+  pullDownRefresh (data) {
+    // dispatch(store.actionCreator.setOffset(0))
+    dispatch(store.actionCreator.requestSingerList(data))
+  },
+  pullUpRequest (data) {
+    // dispatch(store.actionCreator.setOffset(0))
+    dispatch(store.actionCreator.requestSingerList(data))
+  },
+  setCategory (data) {
+    dispatch(store.actionCreator.setCategory(data))
+  },
+  setLetter (data) {
+    dispatch(store.actionCreator.setLetter(data))
+  },
 })
 export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Singers))

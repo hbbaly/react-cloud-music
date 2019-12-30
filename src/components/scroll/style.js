@@ -10,7 +10,7 @@ position: absolute
 width: 100%
 padding: 20px
 box-sizing: border-box
-transform: translateY(-100%) translateZ(0)
+transform: translateY(-100%) translateZ(0);
 text-align: center
 color: #999
 z-index: -1
