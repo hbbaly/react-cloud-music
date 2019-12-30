@@ -17,6 +17,7 @@ import PullUpDom from './pullUp'
 BetterScroll.use(PullDownPlugin)
 BetterScroll.use(PullUpPlugin)
 
+
 const Scroll = forwardRef((props, ref) => {
   const DIRECTION_H = 'horizontal'
   const DIRECTION_V = 'vertical'
@@ -30,6 +31,9 @@ const Scroll = forwardRef((props, ref) => {
     if (!ScrollContainer) {
       return false
     }
+    if (bScroll) {
+      bScroll.refresh()
+    } else {
     let options = {
       probeType,
       click,
@@ -43,6 +47,7 @@ const Scroll = forwardRef((props, ref) => {
     }
     let scroll = new BetterScroll(ScrollContainer.current, options)
     setBScroll(scroll)
+  }
     return () => {
       setBScroll(null)
     }
@@ -123,19 +128,22 @@ const Scroll = forwardRef((props, ref) => {
 
   // 上啦加载
   useEffect(() => {
+    
     if (!bScroll) return
-    if (bScroll) bScroll.refresh()
-
+    bScroll.refresh()
+    bScroll.scrollTo(0,0)  // 这个必须有，否则切换tag不会触发上啦
     if (pullUpLoad) {
       bScroll.on('pullingUp', async () => {
         console.log('上啦')
         setIsPullUpLoad(true)
-
-        await requestPullUp()
         
-        bScroll.finishPullUp()
-        bScroll.refresh()
-        setIsPullUpLoad(false)
+        await requestPullUp()
+
+        setTimeout(() => {
+          bScroll.finishPullUp()
+          bScroll.refresh()
+          setIsPullUpLoad(false)
+        }, 300);
       })
     }
     return () => {

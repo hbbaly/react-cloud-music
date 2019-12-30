@@ -5,11 +5,9 @@ import { categoryTypes, alphaTypes } from './singersData'
 import store from './store'
 import SingersList from './components/singerList'
 function Singers(props) {
- 
-
-  const { requestSingerList, setCategory, setLetter, pullDownRefresh} = props
-  const { singerList, offset, category, letter, limit } = props
-
+  const { requestSingerList, setCategory, setLetter, pullDownRefresh, pullUpRequest} = props
+  const { singerList, offset, category, letter } = props
+  console.log(offset, '==offset====');
   
   useEffect(() => {
     requestSingerList()
@@ -36,9 +34,6 @@ function Singers(props) {
       // cleanup
     }
   }, [])
-  function requestUp() { 
-    // setOffset(offset + 1)
-   }
   // 拉动垂立
   return (
     <div>
@@ -59,7 +54,7 @@ function Singers(props) {
         />
       </div>
       <div className="singer-wrapper">
-        <SingersList scrollHeight={singerHeight} singerList={singerList} requestPullDown = {() => pullDownRefresh({limit, cat: `${category}`, initial: `${letter}`, offset: `${offset}`})} requestPullUp = {requestUp} />
+        <SingersList scrollHeight={singerHeight} singerList={singerList} requestPullDown = {async () => await pullDownRefresh()} requestPullUp = {async () => await pullUpRequest(offset+1)} />
       </div>
     </div>
   )
@@ -72,18 +67,18 @@ const mapStateToProps = state => {
     letter: state.getIn(['singer', 'letter'])
   }
 }
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
 
   requestSingerList(data) {
     dispatch(store.actionCreator.requestSingerList(data))
   },
-  pullDownRefresh (data) {
-    // dispatch(store.actionCreator.setOffset(0))
-    dispatch(store.actionCreator.requestSingerList(data))
+  pullDownRefresh () {
+    dispatch(store.actionCreator.setOffset(0))
+    dispatch(store.actionCreator.requestSingerList())
   },
-  pullUpRequest (data) {
-    // dispatch(store.actionCreator.setOffset(0))
-    dispatch(store.actionCreator.requestSingerList(data))
+  async pullUpRequest (data) {
+    dispatch(store.actionCreator.setOffset(data))
+    await dispatch(store.actionCreator.requestSingerList())
   },
   setCategory (data) {
     dispatch(store.actionCreator.setCategory(data))
