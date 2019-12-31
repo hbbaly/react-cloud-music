@@ -167,16 +167,24 @@ const Scroll = forwardRef((props, ref) => {
       }
     }
   }))
+  
   if (direction === DIRECTION_V) {
+    let pullDownRefreshCom = '', pullUpLoadCom = ''
+    if (pullDownRefresh) {
+      pullDownRefreshCom = <PullDownCom
+        beforePullDown={BeforePullDown}
+        isPullingDown={IsPullingDown}
+      />
+    }
+    if (pullUpLoad) {
+      pullUpLoadCom = <PullUpDom isPullUpLoad={IsPullUpLoad} />
+    }
     return (
         <ScrollWrapper ref={ScrollContainer} style={{height:scrollHeight}}>
           <div>
-          <PullDownCom
-            beforePullDown={BeforePullDown}
-            isPullingDown={IsPullingDown}
-          />
+            {pullDownRefreshCom}
             {props.children}
-              <PullUpDom isPullUpLoad={IsPullUpLoad} />
+            {pullUpLoadCom}
             </div>
           
         </ScrollWrapper>
