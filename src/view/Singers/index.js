@@ -4,11 +4,18 @@ import HorizontalScroll from './components/horizen'
 import { categoryTypes, alphaTypes } from './singersData'
 import store from './store'
 import SingersList from './components/singerList'
+
 function Singers(props) {
-  const { requestSingerList, setCategory, setLetter, pullDownRefresh, pullUpRequest} = props
+
+  const {
+    requestSingerList,
+    setCategory,
+    setLetter,
+    pullDownRefresh,
+    pullUpRequest
+  } = props
   const { singerList, offset, category, letter } = props
-  console.log(offset, '==offset====');
-  
+
   useEffect(() => {
     requestSingerList()
     return () => {
@@ -54,7 +61,12 @@ function Singers(props) {
         />
       </div>
       <div className="singer-wrapper">
-        <SingersList scrollHeight={singerHeight} singerList={singerList} requestPullDown = {async () => await pullDownRefresh()} requestPullUp = {async () => await pullUpRequest(offset+1)} />
+        <SingersList
+          scrollHeight={singerHeight}
+          singerList={singerList}
+          requestPullDown={async () => await pullDownRefresh()}
+          requestPullUp={async () => await pullUpRequest(offset + 1)}
+        />
       </div>
     </div>
   )
@@ -62,29 +74,28 @@ function Singers(props) {
 const mapStateToProps = state => {
   return {
     singerList: state.getIn(['singer', 'singerList']),
-    offset: state.getIn(['singer','offset']),
+    offset: state.getIn(['singer', 'offset']),
     category: state.getIn(['singer', 'category']),
     letter: state.getIn(['singer', 'letter'])
   }
 }
-const mapDispatchToProps = (dispatch) => ({
-
+const mapDispatchToProps = dispatch => ({
   requestSingerList(data) {
     dispatch(store.actionCreator.requestSingerList(data))
   },
-  pullDownRefresh () {
+  async pullDownRefresh() {
     dispatch(store.actionCreator.setOffset(0))
     dispatch(store.actionCreator.requestSingerList())
   },
-  async pullUpRequest (data) {
+  async pullUpRequest(data) {
     dispatch(store.actionCreator.setOffset(data))
     await dispatch(store.actionCreator.requestSingerList())
   },
-  setCategory (data) {
+  setCategory(data) {
     dispatch(store.actionCreator.setCategory(data))
   },
-  setLetter (data) {
+  setLetter(data) {
     dispatch(store.actionCreator.setLetter(data))
-  },
+  }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Singers))
