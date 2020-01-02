@@ -78,3 +78,18 @@ export default App;
 这里只能显示home，在地址后面加上 /recommend，却并没有显示 Recommend 组件相应的内容，因为 renderRoutes 这个方法只渲染一层路由，之前 Home 处于数组第一层，后面的功能组件在第二层，当然不能正常渲染啦。其实要解决这个问题也非常简单，只需在 `Home` 中再次调用 `renderRoutes` 即可。
 
 `Home/index.js`
+
+```js
+import React from 'react'
+import { renderRoutes } from 'react-router-config'
+function Home(props) {
+  const { route } = props
+  return (
+    <div>
+      <div>Home</div>
+      {renderRoutes(route.routes)}
+    </div>
+  )
+}
+export default React.memo(Home)
+```
