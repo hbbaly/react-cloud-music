@@ -1,5 +1,7 @@
 # 引用iconfont字体图标
 
+[iconfont使用源码](../src/assets/iconfont/iconfont.js 'iconfont')
+
 到[iconfont](https://www.iconfont.cn/home/index?spm=a313x.7781069.1998910419.2)下载自己所需的字体图标库到本地
 
 在`src`目录下新建`assets`文件夹，在其内新建`iconfont`文件夹，

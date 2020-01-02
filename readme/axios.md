@@ -1,5 +1,7 @@
 # axios封装
 
+[点击这里看源码](../src/utils/http.js 'axios')
+
 ```bash
 cnpm i -S axios qs
 ```

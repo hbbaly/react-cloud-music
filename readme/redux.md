@@ -1,5 +1,7 @@
 # redux
 
+[store使用源码](../src/view/Recommend/store/index.js 'redux')
+
 在`Recommend文件夹下新建store文件夹`, 在其内新建`actionCreator, actionType, index.js,reducer`文件
 
 `actionType.js`

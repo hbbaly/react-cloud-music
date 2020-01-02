@@ -1,5 +1,7 @@
 # 定义全局样式变量
 
+[变量源码](../src/assets/global.js 'variables')
+
 `assets/global.js`
 
 ```js

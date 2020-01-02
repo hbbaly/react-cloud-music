@@ -1,5 +1,7 @@
 # 编写通用头部样式
 
+[header源码](../src/view/Home/index.js 'header')
+
 `view/Home/style.js`
 
 ```js

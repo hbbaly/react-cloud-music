@@ -1,5 +1,7 @@
 # 添加styled-components
 
+[styled-components使用源码](../src/reset.js 'redux')
+
 ```bash
 npm i -S styled-components
 ```

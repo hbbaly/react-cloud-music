@@ -1,5 +1,7 @@
 # 添加api
 
+[点击这里](../src/api/index.js 'api')
+
 `api`文件夹内recommend.js
 
 ```js

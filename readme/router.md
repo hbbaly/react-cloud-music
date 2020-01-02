@@ -1,5 +1,7 @@
 # 配置路由
 
+[使用源码](../src/routes/index.js 'router-config')
+
 ## 安装依赖
 
 ```bash

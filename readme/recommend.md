@@ -1,5 +1,7 @@
 # 推荐页面编写
 
+[页面源码](../src/view/Recommend/index.js 'recommend')
+
 ### 轮播图的编写
 
 ```bash
