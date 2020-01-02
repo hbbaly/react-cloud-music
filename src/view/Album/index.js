@@ -106,6 +106,7 @@ function Album(props) {
   const { requestAlbumDetail } = props
   const id = props.match.params.id || 0
   let albumDetail = albumDetails.toJS ();
+  
   useEffect( () => {
     requestAlbumDetail(id)
     return () => {
