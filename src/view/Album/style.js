@@ -41,13 +41,14 @@ export const TopDesc = styled.div`
   position: relative;
   .background {
     z-index: -1;
-    background: url (${props => props.background}) no-repeat;
     background-position: 0 0;
     background-size: 100% 100%;
     position: absolute;
     width: 100%;
     height: 100%;
-    filter: blur (${translatePxToRem(40)});
+    filter: blur(${translatePxToRem(40)});
+    background: url(${props => props.background}) no-repeat;
+
     .filter {
       position: absolute;
       z-index: 10;

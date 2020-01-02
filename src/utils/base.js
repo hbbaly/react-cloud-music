@@ -36,3 +36,8 @@ export const translatePxToRem = (number) => {
   let fs = getFontSize()
   return `${Number(number)/fs}rem`
 }
+
+// 判断一个对象是否为空
+export const isEmptyObject = obj =>{
+  return !obj || Object.keys(obj).length === 0
+} 
