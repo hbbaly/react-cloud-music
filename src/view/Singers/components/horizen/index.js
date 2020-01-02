@@ -10,7 +10,7 @@ function HorizontalScroll(props) {
 
   const [scrollWidth, setScrollWidth] = useState(0)
   const [width, setWidth] = useState(6000)
-  
+
   useEffect(() => {
     let windowWidth =
       document.body.clientWidth || document.documentElement.clientWidth
@@ -43,7 +43,13 @@ function HorizontalScroll(props) {
           data={list}
         >
           {list.map((item, index) => (
-            <div key={index} className={chooseKey === item.key ? 'scroll-item selected': 'scroll-item'} onClick={() => handleClick(item.key)}>
+            <div
+              key={index}
+              className={
+                chooseKey === item.key ? 'scroll-item selected' : 'scroll-item'
+              }
+              onClick={() => handleClick(item.key)}
+            >
               {item.name}
             </div>
           ))}
@@ -61,7 +67,7 @@ HorizontalScroll.defaultProps = {
 HorizontalScroll.propTypes = {
   title: PropTypes.string,
   list: PropTypes.array,
-  handleClick:PropTypes.func,
+  handleClick: PropTypes.func,
   chooseKey: PropTypes.string
 }
 export default HorizontalScroll

@@ -1,20 +1,17 @@
 import React, { useRef, useState, useEffect } from 'react'
 import LazyLoad, { forceCheck } from 'react-lazyload'
+import { withRouter } from 'react-router-dom'
 import { ListWrapper, ListItem, List } from './style'
 import { getCount } from '../../../../utils/base'
 import Scroll from '../../../../components/scroll'
 function RecommendList(props) {
   const listScroll = useRef()
   const { recommendList } = props
-  const [list, setList] = useState([])
-
-  useEffect(() => {
-    setList(recommendList)
-    return () => {
-      // cleanup
-    }
-  }, [recommendList])
   
+  const goDetail = (id) => {
+    props.history.push (`/recommend/${id}`)
+  }
+
   return (
         
     <ListWrapper >
@@ -22,15 +19,13 @@ function RecommendList(props) {
       <Scroll
         scrollHeight='400px'
         ref={listScroll}
-        data={list}
+        data={recommendList}
         listenScroll={true}
         onScroll={forceCheck}
-        // pullDownRefresh={{ threshold: 70, stop: 60 }}
-        // pullUpLoad={true}
       >
         <List>
           {recommendList.map((item, index) => (
-            <ListItem key={item.id}>
+            <ListItem key={item.id} onClick={() => goDetail(item.id)}>
               <div className="img_wrapper">
                 <div className="decorate"></div>
                 {/* 加此参数可以减小请求的图片资源大小 */}
@@ -64,4 +59,4 @@ function RecommendList(props) {
     </ListWrapper>
   )
 }
-export default React.memo(RecommendList)
+export default React.memo(withRouter(RecommendList))

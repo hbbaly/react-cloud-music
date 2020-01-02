@@ -12,7 +12,7 @@ function SingersList(props) {
       pullDownRefresh={{ threshold: 70, stop: 60 }}
       pullUpLoad={true}
       requestPullDown={requestPullDown}
-      requestPullUp = {requestPullUp}
+      requestPullUp={requestPullUp}
     >
       <List>
         {singerList.map((item, index) => {
@@ -41,7 +41,7 @@ SingersList.defaultProps = {
   requestPullUp: null
 }
 SingersList.propTypes = {
-  singerList: PropTypes.array,
+  singerList: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   scrollHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   requestPullDown: PropTypes.func,
   requestPullUp: PropTypes.func

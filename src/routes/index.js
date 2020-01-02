@@ -1,10 +1,10 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 import Home from '../view/Home'
-import Recommend from '../view/Recommend';
-import Singers from '../view/Singers';
-import Rank from '../view/Rank';
-
+import Recommend from '../view/Recommend'
+import Singers from '../view/Singers'
+import Rank from '../view/Rank'
+import Album from '../view/Album'
 export default [
   {
     path: '/',
@@ -19,7 +19,13 @@ export default [
       },
       {
         path: "/recommend",
-        component: Recommend
+        component: Recommend,
+        routes: [
+          {
+            path: "/recommend/:id",
+            component: Album
+          }
+        ]
       },
       {
         path: "/singers",

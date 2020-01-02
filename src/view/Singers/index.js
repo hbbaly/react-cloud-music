@@ -41,7 +41,7 @@ function Singers(props) {
       // cleanup
     }
   }, [])
-  // 拉动垂立
+
   return (
     <div>
       <div className="hot-category" ref={catContainer}>
@@ -71,6 +71,7 @@ function Singers(props) {
     </div>
   )
 }
+
 const mapStateToProps = state => {
   return {
     singerList: state.getIn(['singer', 'singerList']),

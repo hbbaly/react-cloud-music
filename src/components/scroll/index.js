@@ -17,12 +17,21 @@ import PullUpDom from './pullUp'
 BetterScroll.use(PullDownPlugin)
 BetterScroll.use(PullUpPlugin)
 
-
 const Scroll = forwardRef((props, ref) => {
   const DIRECTION_H = 'horizontal'
   const DIRECTION_V = 'vertical'
 
-  const { click, probeType, startX, freeScroll, startY, direction, scrollWidth, scrollContent, scrollHeight } = props
+  const {
+    click,
+    probeType,
+    startX,
+    freeScroll,
+    startY,
+    direction,
+    scrollWidth,
+    scrollContent,
+    scrollHeight
+  } = props
 
   const ScrollContainer = useRef()
   const [bScroll, setBScroll] = useState()
@@ -34,20 +43,20 @@ const Scroll = forwardRef((props, ref) => {
     if (bScroll) {
       bScroll.refresh()
     } else {
-    let options = {
-      probeType,
-      click,
-      scrollY: freeScroll || direction === DIRECTION_V,
-      scrollX: freeScroll || direction === DIRECTION_H,
-      pullDownRefresh,
-      pullUpLoad,
-      startY,
-      startX,
-      freeScroll
+      let options = {
+        probeType,
+        click,
+        scrollY: freeScroll || direction === DIRECTION_V,
+        scrollX: freeScroll || direction === DIRECTION_H,
+        pullDownRefresh,
+        pullUpLoad,
+        startY,
+        startX,
+        freeScroll
+      }
+      let scroll = new BetterScroll(ScrollContainer.current, options)
+      setBScroll(scroll)
     }
-    let scroll = new BetterScroll(ScrollContainer.current, options)
-    setBScroll(scroll)
-  }
     return () => {
       setBScroll(null)
     }
@@ -62,7 +71,7 @@ const Scroll = forwardRef((props, ref) => {
     data,
     onScroll
   } = props
-  const {requestPullDown, requestPullUp } = props
+  const { requestPullDown, requestPullUp } = props
   const [BeforePullDown, setBeforePullDown] = useState(true)
   const [IsPullingDown, setIsPullingDown] = useState(false)
   const [IsPullUpLoad, setIsPullUpLoad] = useState(false)
@@ -125,25 +134,23 @@ const Scroll = forwardRef((props, ref) => {
     }
   }, [bScroll, data.length])
 
-
   // 上啦加载
   useEffect(() => {
-    
     if (!bScroll) return
     bScroll.refresh()
-    bScroll.scrollTo(0,0)  // 这个必须有，否则切换tag不会触发上啦
+    bScroll.scrollTo(0, 0) // 这个必须有，否则切换tag不会触发上啦
     if (pullUpLoad) {
       bScroll.on('pullingUp', async () => {
         console.log('上啦')
         setIsPullUpLoad(true)
-        
+
         await requestPullUp()
 
         setTimeout(() => {
           bScroll.finishPullUp()
           bScroll.refresh()
           setIsPullUpLoad(false)
-        }, 300);
+        }, 300)
       })
     }
     return () => {
@@ -167,35 +174,40 @@ const Scroll = forwardRef((props, ref) => {
       }
     }
   }))
-  
+
   if (direction === DIRECTION_V) {
-    let pullDownRefreshCom = '', pullUpLoadCom = ''
+    let pullDownRefreshCom = '',
+      pullUpLoadCom = ''
+      
     if (pullDownRefresh) {
-      pullDownRefreshCom = <PullDownCom
-        beforePullDown={BeforePullDown}
-        isPullingDown={IsPullingDown}
-      />
+      pullDownRefreshCom = (
+        <PullDownCom
+          beforePullDown={BeforePullDown}
+          isPullingDown={IsPullingDown}
+        />
+      )
     }
+
     if (pullUpLoad) {
       pullUpLoadCom = <PullUpDom isPullUpLoad={IsPullUpLoad} />
     }
+
     return (
-        <ScrollWrapper ref={ScrollContainer} style={{height:scrollHeight}}>
-          <div>
-            {pullDownRefreshCom}
-            {props.children}
-            {pullUpLoadCom}
-            </div>
-          
-        </ScrollWrapper>
+      <ScrollWrapper ref={ScrollContainer} style={{ height: scrollHeight }}>
+        <div>
+          {pullDownRefreshCom}
+          {props.children}
+          {pullUpLoadCom}
+        </div>
+      </ScrollWrapper>
     )
   } else {
-    return(
-        <ScrollWrapper style={{width:scrollWidth}} ref={ScrollContainer} >
-          <div style={{display: 'flex',width: scrollContent}} >
-            {props.children}
-          </div>
-        </ScrollWrapper>
+    return (
+      <ScrollWrapper style={{ width: scrollWidth }} ref={ScrollContainer}>
+        <div style={{ display: 'flex', width: scrollContent }}>
+          {props.children}
+        </div>
+      </ScrollWrapper>
     )
   }
 })
