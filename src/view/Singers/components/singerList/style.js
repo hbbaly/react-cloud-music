@@ -1,8 +1,9 @@
 import styled from 'styled-components'
 import style from '../../../../assets/global'
+import { translatePxToRem } from '../../../../utils/base'
 export const ListContainer = styled.div`
   position: fixed;
-  top: 160px;
+  top: ${translatePxToRem(320)};
   left: 0;
   bottom: 0;
   overflow: hidden;
@@ -15,29 +16,29 @@ export const List = styled.div`
   flex-direction: column;
   overflow: hidden;
   .title {
-    margin: 10px 0 10px 10px;
+    margin: ${translatePxToRem(20)} 0 ${translatePxToRem(20)} ${translatePxToRem(20)};
     color: ${style['font-color-desc']};
-    font-size: ${style['font-size-s']};
+    font-size: ${translatePxToRem(28)};
   }
 `
 export const ListItem = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
-  margin: 0 5px;
-  padding: 5px 0;
+  margin: 0 ${translatePxToRem(10)};
+  padding: ${translatePxToRem(10)} 0;
   align-items: center;
-  border-bottom: 1px solid ${style['border-color']};
+  border-bottom: ${translatePxToRem(1)} solid ${style['border-color']};
   .img_wrapper {
-    margin-right: 20px;
+    margin-right: ${translatePxToRem(40)};
     img {
-      border-radius: 3px;
-      width: 50px;
-      height: 50px;
+      border-radius: ${translatePxToRem(6)};
+      width: ${translatePxToRem(100)};
+      height: ${translatePxToRem(100)};
     }
   }
   .name {
-    font-size: ${style['font-size-m']};
+    font-size: ${translatePxToRem(28)};
     color: ${style['font-color-desc']};
     font-weight: 500;
   }

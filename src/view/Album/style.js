@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import style from '../../assets/global'
+import { translatePxToRem } from '../../utils/base'
 export const Container = styled.div`
   position: fixed;
   top: 0;
@@ -28,15 +29,15 @@ export const Container = styled.div`
 `
 export const TopDesc = styled.div`
   background-size: 100%;
-  padding: 5px 20px;
-  padding-bottom: 50px;
-  margin-bottom: 20px;
+  padding: ${translatePxToRem(10)} ${translatePxToRem(40)};
+  padding-bottom: ${translatePxToRem(100)};
+  margin-bottom: ${translatePxToRem(40)};
   display: flex;
   justify-content: space-around;
   align-items: center;
   box-sizing: border-box;
   width: 100%;
-  height: 275px;
+  height: ${translatePxToRem(550)};
   position: relative;
   .background {
     z-index: -1;
@@ -46,7 +47,7 @@ export const TopDesc = styled.div`
     position: absolute;
     width: 100%;
     height: 100%;
-    filter: blur (20px);
+    filter: blur (${translatePxToRem(40)});
     .filter {
       position: absolute;
       z-index: 10;
@@ -58,33 +59,33 @@ export const TopDesc = styled.div`
     }
   }
   .img_wrapper {
-    width: 120px;
-    height: 120px;
+    width: ${translatePxToRem(240)};
+    height: ${translatePxToRem(240)};
     position: relative;
     .decorate {
       position: absolute;
       top: 0;
       width: 100%;
-      height: 35px;
-      border-radius: 3px;
+      height: ${translatePxToRem(70)};
+      border-radius: ${translatePxToRem(6)};
       background: linear-gradient
         (hsla (0, 0%, 43%, 0.4), hsla (0, 0%, 100%, 0));
     }
     .play_count {
       position: absolute;
-      right: 2px;
-      top: 2px;
-      font-size: ${style['font-size-s']};
-      line-height: 15px;
+      right: ${translatePxToRem(4)};
+      top: ${translatePxToRem(4)};
+      font-size: ${style['font_small']};
+      line-height: ${translatePxToRem(30)};
       color: ${style['font-color-light']};
       .play {
         vertical-align: top;
       }
     }
     img {
-      width: 120px;
-      height: 120px;
-      border-radius: 3px;
+      width: ${translatePxToRem(240)};
+      height: ${translatePxToRem(240)};
+      border-radius: ${translatePxToRem(6)};
     }
   }
   .desc_wrapper {
@@ -92,21 +93,21 @@ export const TopDesc = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    height: 120px;
-    padding: 0 10px;
+    height: ${translatePxToRem(240)};
+    padding: 0 ${translatePxToRem(20)};
     .title {
-      max-height: 70px;
+      max-height: ${translatePxToRem(140)};
       color: ${style['font-color-light']};
       font-weight: 700;
       line-height: 1.5;
-      font-size: ${style['font-size-l']};
+      font-size: ${style['font_small']};
     }
     .person {
       display: flex;
       .avatar {
-        width: 20px;
-        height: 20px;
-        margin-right: 5px;
+        width: ${translatePxToRem(40)};
+        height: ${translatePxToRem(40)};
+        margin-right: ${translatePxToRem(10)};
         img {
           width: 100%;
           height: 100%;
@@ -114,8 +115,8 @@ export const TopDesc = styled.div`
         }
       }
       .name {
-        line-height: 20px;
-        font-size: ${style['font-size-m']};
+        line-height: ${translatePxToRem(40)};
+        font-size: ${style['font_small']};
         color: ${style['font-color-desc-v2']};
       }
     }
@@ -127,25 +128,25 @@ export const Menu = styled.div`
   display: flex;
   justify-content: space-between;
   box-sizing: border-box;
-  padding: 0 30px 20px 30px;
+  padding: 0 ${translatePxToRem(60)} ${translatePxToRem(40)} ${translatePxToRem(60)};
   margin: -100px 0 0 0;
   > div {
     display: flex;
     flex-direction: column;
-    line-height: 20px;
+    line-height: ${translatePxToRem(40)};
     text-align: center;
-    font-size: ${style['font-size-s']};
+    font-size: ${style['font_small']};
     color: ${style['font-color-light']};
     z-index: 1000;
     font-weight: 500;
     .iconfont {
-      font-size: 20px;
+      font-size: ${translatePxToRem(40)};
     }
   }
 `
 
 export const SongList = styled.div`
-  border-radius: 10px;
+  border-radius: ${translatePxToRem(20)};
   opacity: 0.98;
   ${props =>
     props.showBackground
@@ -153,22 +154,22 @@ export const SongList = styled.div`
       : ''}
   .first_line {
     box-sizing: border-box;
-    padding: 10px 0;
-    margin-left: 10px;
+    padding: ${translatePxToRem(20)} 0;
+    margin-left: ${translatePxToRem(20)};
     position: relative;
     justify-content: space-between;
     border-bottom: 1px solid ${style['border-color']};
     .play_all {
       display: inline-block;
-      line-height: 24px;
+      line-height: ${translatePxToRem(48)};
       color: ${style['font-color-desc']};
       .iconfont {
-        font-size: 24px;
-        margin-right: 10px;
+        font-size: ${translatePxToRem(48)};
+        margin-right: ${translatePxToRem(20)};
         vertical-align: top;
       }
       .sum {
-        font-size: ${style['font-size-s']};
+        font-size: ${style['font_small']};
         color: ${style['font-color-desc-v2']};
       }
       > span {
@@ -183,21 +184,21 @@ export const SongList = styled.div`
       right: 0;
       top: 0;
       bottom: 0;
-      width: 130px;
-      line-height: 34px;
+      width: ${translatePxToRem(260)};
+      line-height: ${translatePxToRem(69)};
       background: ${style['theme-color']};
       color: ${style['font-color-light']};
       font-size: 0;
-      border-radius: 3px;
+      border-radius: ${translatePxToRem(6)};
       vertical-align: top;
       .iconfont {
         vertical-align: top;
-        font-size: 10px;
-        margin: 0 5px 0 10px;
+        font-size: ${translatePxToRem(20)};
+        margin: 0 ${translatePxToRem(10)} 0 ${translatePxToRem(20)};
       }
       span {
-        font-size: 14px;
-        line-height: 34px;
+        font-size: ${translatePxToRem(28)};
+        line-height: ${translatePxToRem(69)};
       }
     }
     .isCollected {
@@ -210,13 +211,13 @@ export const SongList = styled.div`
 export const SongItem = styled.ul`
   > li {
     display: flex;
-    height: 60px;
+    height: ${translatePxToRem(120)};
     align-items: center;
     .index {
-      flex-basis: 60px;
-      width: 60px;
-      height: 60px;
-      line-height: 60px;
+      flex-basis: ${translatePxToRem(120)};
+      width: ${translatePxToRem(120)};
+      height: ${translatePxToRem(120)};
+      line-height: ${translatePxToRem(120)};
       text-align: center;
     }
     .info {
@@ -224,19 +225,20 @@ export const SongItem = styled.ul`
       flex: 1;
       display: flex;
       height: 100%;
-      padding: 5px 0;
+      padding: ${translatePxToRem(10)} 0;
       flex-direction: column;
       justify-content: space-around;
       border-bottom: 1px solid ${style['border-color']};
       ${style.noWrap()}
       >span {
+        font-size: ${style['font_small']};
         ${style.noWrap()}
       }
       > span:first-child {
         color: ${style['font-color-desc']};
       }
       > span:last-child {
-        font-size: ${style['font-size-s']};
+        font-size: ${style['font_small']};
         color: #bba8a8;
       }
     }

@@ -17,7 +17,7 @@ function RecommendList(props) {
     <ListWrapper >
       <h1 className="title"> 推荐歌单 </h1>
       <Scroll
-        scrollHeight='400px'
+        scrollHeight='800px'
         ref={listScroll}
         data={recommendList}
         listenScroll={true}

@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 import GlobalStyle from '../../assets/global'
+
+import { translatePxToRem } from '../../utils/base'
 export const Top = styled.div`
   display: flex;
   flex-direction: row;
@@ -7,16 +9,16 @@ export const Top = styled.div`
   padding: ${GlobalStyle.space_smallest} ${GlobalStyle.space_smaller};
   background: ${GlobalStyle["theme-color"]};
   &>span {
-    line-height: 40px;
+    line-height: ${translatePxToRem(80)};
     color: #f1f1f1;
-    font-size: 20px;
+    font-size: ${translatePxToRem(40)};
     &.iconfont {
-      font-size: 25px;
+      font-size: ${translatePxToRem(50)};
     }
   }
 `
 const TabOrigin = styled.div`
-  height: 44px;
+  height: ${translatePxToRem(88)};
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -25,15 +27,15 @@ export const Tab = styled(TabOrigin)`
   background: ${GlobalStyle["theme-color"]};
   a {
     flex: 1;
-    padding: 2px 0;
-    font-size: 14px;
+    padding: ${translatePxToRem(4)} 0;
+    font-size: ${translatePxToRem(28)};
     color: #e4e4e4;
     &.selected {
       span {
-        padding: 3px 0;
+        padding: ${translatePxToRem(6)} 0;
         font-weight: 700;
         color: #f1f1f1;
-        border-bottom: 2px solid #f1f1f1;
+        border-bottom: ${translatePxToRem(4)} solid #f1f1f1;
       }
     }
   }

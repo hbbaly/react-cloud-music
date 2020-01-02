@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import GlobalStyle from '../../../../assets/global'
+import { translatePxToRem } from '../../../../utils/base'
 export const SliderContainer = styled.div`
   position: relative;
   box-sizing: border-box;
@@ -17,10 +18,10 @@ export const SliderContainer = styled.div`
   .slider-container {
     position: relative;
     width: 98%;
-    height: 160px;
+    height: ${translatePxToRem(320)};
     overflow: hidden;
     margin: auto;
-    border-radius: 6px;
+    border-radius: ${translatePxToRem(12)};
     .slider-nav {
       position: absolute;
       display: block;

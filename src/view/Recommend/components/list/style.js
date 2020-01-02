@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import style from "../../../../assets/global";
-
+import { translatePxToRem } from '../../../../utils/base'
 export const ListWrapper = styled.div`
   max-width: 100%;
   .title {
     font-weight: 700;
-    padding-left: 6px;
-    font-size: 14px;
-    line-height: 60px;
+    padding-left: ${translatePxToRem(12)};
+    font-size: ${translatePxToRem(28)};
+    line-height: ${translatePxToRem(120)};
     color: ${style["font-color"]};
   }
 `;
@@ -21,14 +21,14 @@ export const List = styled.div`
 
 export const ListItem = styled.div`
   position: relative;
-  width: 120px;
+  width: ${translatePxToRem(240)};
   .img_wrapper {
     .decorate {
       position: absolute;
       top: 0;
       width: 100%;
-      height: 35px;
-      border-radius: 3px;
+      height: ${translatePxToRem(70)};
+      border-radius: ${translatePxToRem(6)};
       background: linear-gradient (hsla(0, 0%, 43%, 0.4), hsla(0, 0%, 100%, 0));
     }
     position: relative;
@@ -36,10 +36,10 @@ export const ListItem = styled.div`
     padding-bottom: 100%;
     .play_count {
       position: absolute;
-      right: 2px;
-      top: 2px;
+      right: ${translatePxToRem(4)};
+      top: ${translatePxToRem(4)};
       font-size: ${style['font_base']};
-      line-height: 15px;
+      line-height: ${translatePxToRem(30)};
       color: ${style["font-color-light"]};
       .play {
         vertical-align: top;
@@ -49,14 +49,14 @@ export const ListItem = styled.div`
       position: absolute;
       width: 100%;
       height: 100%;
-      border-radius: 3px;
+      border-radius: ${translatePxToRem(6)};
     }
   }
   .desc {
     overflow: hidden;
-    margin-top: 2px;
-    padding: 0 2px;
-    height: 50px;
+    margin-top: ${translatePxToRem(4)};
+    padding: 0 ${translatePxToRem(4)};
+    height: ${translatePxToRem(100)};
     text-align: left;
     font-size: ${style["font_smaller"]};
     line-height: 1.4;

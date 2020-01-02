@@ -23,3 +23,16 @@ export const getName = list => {
   });
   return str;
 };
+
+export const getFontSize = () => {
+  let fs = document.getElementsByTagName('html')[0].style.cssText.split(':')[1].split('px')[0]
+  fs = fs.replace(/^\s+|\s+$/g, '')
+  return fs
+}
+
+
+
+export const translatePxToRem = (number) => {
+  let fs = getFontSize()
+  return `${Number(number)/fs}rem`
+}

@@ -19,24 +19,24 @@ const noWrap = () => {
 }
 // 文字大小处理
 const FontSize = {
-  font_largest: '22px',
-  font_larger: '20px',
-  font_large: '18px',
-  font_base: '16px',
-  font_small: '14px',
-  font_smaller: '12px',
-  font_smallest: '10px'
+  font_largest: '44px',
+  font_larger: '40px',
+  font_large: '36px',
+  font_base: '32px',
+  font_small: '28px',
+  font_smaller: '24px',
+  font_smallest: '20px'
 
 }
 // 间距大小
 const Space = {
-  space_largest: '34px',
-  space_larger: '30px',
-  space_large: '25px',
-  space_base: '20px',
-  space_small: '15px',
-  space_smaller: '10px',
-  space_smallest: '5px'
+  space_largest: '68px',
+  space_larger: '60px',
+  space_large: '50px',
+  space_base: '40px',
+  space_small: '30px',
+  space_smaller: '20px',
+  space_smallest: '10px'
 }
 //颜色处理
 const Color = {
