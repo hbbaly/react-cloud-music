@@ -40,6 +40,10 @@ npm i
 
 [global variables](./readme/variables.md 'global variables')
 
+### 添加px2rem支持移动端
+
+[use px2rem](./readme/px2rem.md 'use px2rem')
+
 ### 编写通用头部样式
 
 [common header](./readme/header.md 'common header')
