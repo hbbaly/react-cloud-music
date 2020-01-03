@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { List, ListItem, SongList } from '../../style'
 function OfficalList(props) {
-  
   const { list, global } = props
   // 这是渲染榜单列表函数，传入 global 变量来区分不同的布局方式
   const renderSongList = list => {

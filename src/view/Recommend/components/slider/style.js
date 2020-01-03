@@ -13,7 +13,7 @@ export const SliderContainer = styled.div`
     top: 0;
     height: 60%;
     width: 100%;
-    background: ${GlobalStyle["theme-color"]};
+    background: ${GlobalStyle['theme-color']};
   }
   .slider-container {
     position: relative;
@@ -29,7 +29,7 @@ export const SliderContainer = styled.div`
       height: 100%;
     }
     .swiper-pagination-bullet-active {
-      background: ${GlobalStyle["theme-color"]};
+      background: ${GlobalStyle['theme-color']};
     }
   }
 `

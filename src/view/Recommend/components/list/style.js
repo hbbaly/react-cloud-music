@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import style from "../../../../assets/global";
+import styled from 'styled-components'
+import style from '../../../../assets/global'
 import { translatePxToRem } from '../../../../utils/base'
 export const ListWrapper = styled.div`
   max-width: 100%;
@@ -8,16 +8,16 @@ export const ListWrapper = styled.div`
     padding-left: ${translatePxToRem(12)};
     font-size: ${translatePxToRem(28)};
     line-height: ${translatePxToRem(120)};
-    color: ${style["font-color"]};
+    color: ${style['font-color']};
   }
-`;
+`
 export const List = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-`;
+`
 
 export const ListItem = styled.div`
   position: relative;
@@ -40,7 +40,7 @@ export const ListItem = styled.div`
       top: ${translatePxToRem(4)};
       font-size: ${style['font_base']};
       line-height: ${translatePxToRem(30)};
-      color: ${style["font-color-light"]};
+      color: ${style['font-color-light']};
       .play {
         vertical-align: top;
       }
@@ -58,8 +58,8 @@ export const ListItem = styled.div`
     padding: 0 ${translatePxToRem(4)};
     height: ${translatePxToRem(100)};
     text-align: left;
-    font-size: ${style["font_smaller"]};
+    font-size: ${style['font_smaller']};
     line-height: 1.4;
-    color: ${style["font-color-desc"]};
+    color: ${style['font-color-desc']};
   }
-`;
+`

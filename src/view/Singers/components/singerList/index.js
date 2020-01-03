@@ -8,8 +8,6 @@ function SingersList(props) {
   const { requestPullUp, requestPullDown } = props
 
   const enterDetail = detail => {
-    console.log(detail);
-    
     props.history.push(`/singers/${detail.id}`)
   }
 
@@ -25,7 +23,10 @@ function SingersList(props) {
       <List>
         {singerList.map((item, index) => {
           return (
-            <ListItem key={item.accountId + '' + index} onClick={() => enterDetail(item)}>
+            <ListItem
+              key={item.accountId + '' + index}
+              onClick={() => enterDetail(item)}
+            >
               <div className="img_wrapper">
                 <img
                   src={`${item.picUrl}?param=300x300`}

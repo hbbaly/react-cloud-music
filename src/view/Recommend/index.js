@@ -1,15 +1,15 @@
-import React, {useEffect} from 'react'
-import {connect} from 'react-redux'
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
 import { renderRoutes } from 'react-router-config'
 import Slider from './components/slider'
 import RecommendList from './components/list'
 import store from './store'
 import Loading from '../../components/loading'
 function Recommend(props) {
-  const { route }  = props
-  
+  const { route } = props
+
   const { recommendSingers, bannerList } = props
-  const { requestBanner, requestRecommendSingers} = props
+  const { requestBanner, requestRecommendSingers } = props
   useEffect(() => {
     Loading.open()
     const requestData = async () => {
@@ -18,30 +18,32 @@ function Recommend(props) {
       Loading.close()
     }
     requestData()
-    return () => {
-    };
+    return () => {}
   }, [])
 
   return (
     <div>
       <Slider bannerList={bannerList} />
       <RecommendList recommendList={recommendSingers} />
-      { renderRoutes(route.routes) }
+      {renderRoutes(route.routes)}
     </div>
   )
 }
-const mapStateToProps = (state) => {
-  return ({
-    bannerList: state.get('recommend').get('bannerList'),
-    recommendSingers: state.get('recommend').get('recommendSingers')
-  })
+const mapStateToProps = state => {
+  return {
+    bannerList: state.getIn(['recommend', 'bannerList']),
+    recommendSingers: state.getIn(['recommend', 'recommendSingers'])
+  }
 }
-const mapDispatchToProps = (dispatch) => ({
-  requestBanner(){
+const mapDispatchToProps = dispatch => ({
+  requestBanner() {
     dispatch(store.actionCreator.requestBanner())
   },
-  requestRecommendSingers(){
+  requestRecommendSingers() {
     dispatch(store.actionCreator.requestRecommendSingers())
   }
 })
-export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Recommend))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(React.memo(Recommend))

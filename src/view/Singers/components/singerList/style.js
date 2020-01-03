@@ -16,7 +16,8 @@ export const List = styled.div`
   flex-direction: column;
   overflow: hidden;
   .title {
-    margin: ${translatePxToRem(20)} 0 ${translatePxToRem(20)} ${translatePxToRem(20)};
+    margin: ${translatePxToRem(20)} 0 ${translatePxToRem(20)}
+      ${translatePxToRem(20)};
     color: ${style['font-color-desc']};
     font-size: ${translatePxToRem(28)};
   }

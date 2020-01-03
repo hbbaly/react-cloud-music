@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { renderRoutes } from 'react-router-config'
 import store from './store'
 import { filterIndex } from '../../utils/base'
-import { Container} from './style'
+import { Container } from './style'
 import Scroll from '../../components/scroll'
 import OfficalList from './components/officeList'
 function Rank(props) {
@@ -23,12 +23,12 @@ function Rank(props) {
       <Scroll data={topListDetail}>
         <div>
           <h1 className="offical"> 官方榜 </h1>
-          <OfficalList  list={officialList}/>
+          <OfficalList list={officialList} />
           <h1 className="global"> 全球榜 </h1>
-          <OfficalList  list={globalList} global={true}/>
+          <OfficalList list={globalList} global={true} />
         </div>
       </Scroll>
-      { renderRoutes(route.routes) }
+      {renderRoutes(route.routes)}
     </Container>
   )
 }

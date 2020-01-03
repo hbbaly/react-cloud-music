@@ -7,17 +7,16 @@ import Scroll from '../../../../components/scroll'
 function RecommendList(props) {
   const listScroll = useRef()
   const { recommendList } = props
-  
-  const goDetail = (id) => {
-    props.history.push (`/recommend/${id}`)
+
+  const goDetail = id => {
+    props.history.push(`/recommend/${id}`)
   }
 
   return (
-        
-    <ListWrapper >
+    <ListWrapper>
       <h1 className="title"> 推荐歌单 </h1>
       <Scroll
-        scrollHeight='800px'
+        scrollHeight="800px"
         ref={listScroll}
         data={recommendList}
         listenScroll={true}

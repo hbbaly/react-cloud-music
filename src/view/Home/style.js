@@ -7,8 +7,8 @@ export const Top = styled.div`
   flex-direction: row;
   justify-content: space-between;
   padding: ${GlobalStyle.space_smallest} ${GlobalStyle.space_smaller};
-  background: ${GlobalStyle["theme-color"]};
-  &>span {
+  background: ${GlobalStyle['theme-color']};
+  & > span {
     line-height: ${translatePxToRem(80)};
     color: #f1f1f1;
     font-size: ${translatePxToRem(40)};
@@ -24,7 +24,7 @@ const TabOrigin = styled.div`
   justify-content: space-around;
 `
 export const Tab = styled(TabOrigin)`
-  background: ${GlobalStyle["theme-color"]};
+  background: ${GlobalStyle['theme-color']};
   a {
     flex: 1;
     padding: ${translatePxToRem(4)} 0;

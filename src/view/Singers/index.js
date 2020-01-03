@@ -7,7 +7,6 @@ import store from './store'
 import SingersList from './components/singerList'
 
 function Singers(props) {
-
   const { route } = props
   const {
     requestSingerList,
@@ -70,7 +69,7 @@ function Singers(props) {
           requestPullUp={async () => await pullUpRequest(offset + 1)}
         />
       </div>
-      { renderRoutes(route.routes) }
+      {renderRoutes(route.routes)}
     </div>
   )
 }

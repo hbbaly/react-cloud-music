@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 import { translatePxToRem } from '../../../../utils/base'
 export const ScrollWrapper = styled.div`
   display: flex;
@@ -18,12 +18,12 @@ export const ScrollContent = styled.div`
   overflow: hidden;
   height: ${translatePxToRem(100)};
   line-height: ${translatePxToRem(100)};
-  .scroll-item{
+  .scroll-item {
     width: auto;
     padding-left: ${translatePxToRem(20)};
     font-size: ${translatePxToRem(28)};
   }
-  .selected{
+  .selected {
     color: #d44439;
   }
 `
