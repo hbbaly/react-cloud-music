@@ -1,10 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { withRouter } from 'react-router-dom'
 import Scroll from '../../../../components/scroll'
 import { List, ListItem } from './style'
 function SingersList(props) {
   const { singerList, scrollHeight } = props
   const { requestPullUp, requestPullDown } = props
+
+  const enterDetail = detail => {
+    console.log(detail);
+    
+    props.history.push(`/singers/${detail.id}`)
+  }
+
   return (
     <Scroll
       scrollHeight={scrollHeight}
@@ -17,7 +25,7 @@ function SingersList(props) {
       <List>
         {singerList.map((item, index) => {
           return (
-            <ListItem key={item.accountId + '' + index}>
+            <ListItem key={item.accountId + '' + index} onClick={() => enterDetail(item)}>
               <div className="img_wrapper">
                 <img
                   src={`${item.picUrl}?param=300x300`}
@@ -46,4 +54,4 @@ SingersList.propTypes = {
   requestPullDown: PropTypes.func,
   requestPullUp: PropTypes.func
 }
-export default React.memo(SingersList)
+export default React.memo(withRouter(SingersList))

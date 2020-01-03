@@ -29,11 +29,23 @@ export default [
       },
       {
         path: "/singers",
-        component: Singers
+        component: Singers,
+        routes: [
+          {
+            path: "/singers/:id",
+            component: Album
+          }
+        ]
       },
       {
         path: "/rank",
-        component: Rank
+        component: Rank,
+        routes: [
+          {
+            path: "/rank/:id",
+            component: Album
+          }
+        ]
       }
     ]
   }

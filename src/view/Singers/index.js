@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { connect } from 'react-redux'
+import { renderRoutes } from 'react-router-config'
 import HorizontalScroll from './components/horizen'
 import { categoryTypes, alphaTypes } from './singersData'
 import store from './store'
@@ -7,6 +8,7 @@ import SingersList from './components/singerList'
 
 function Singers(props) {
 
+  const { route } = props
   const {
     requestSingerList,
     setCategory,
@@ -68,6 +70,7 @@ function Singers(props) {
           requestPullUp={async () => await pullUpRequest(offset + 1)}
         />
       </div>
+      { renderRoutes(route.routes) }
     </div>
   )
 }

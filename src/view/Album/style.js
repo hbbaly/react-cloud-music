@@ -30,8 +30,8 @@ export const Container = styled.div`
 export const TopDesc = styled.div`
   background-size: 100%;
   padding: ${translatePxToRem(10)} ${translatePxToRem(40)};
-  padding-bottom: ${translatePxToRem(100)};
-  margin-bottom: ${translatePxToRem(40)};
+  padding-bottom: ${props => (props.issinger ? 0 : `${translatePxToRem(100)}`)};
+  margin-bottom: ${props => (props.issinger ? 0 : `${translatePxToRem(40)}`)};
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -57,6 +57,40 @@ export const TopDesc = styled.div`
       width: 100%;
       height: 100%;
       background: rgba (7, 17, 27, 0.2);
+    }
+  }
+  .singer-background {
+    z-index: -1;
+    background-position: 0 0;
+    background-size: 100% 100%;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url(${props => props.background}) no-repeat center center;
+    background-size: 100% 100%;
+  }
+  .add_list {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    width: ${translatePxToRem(200)};
+    height: ${translatePxToRem(100)};
+    margin-left: -${translatePxToRem(100)};
+    line-height: ${translatePxToRem(100)};
+    background: ${style['theme-color']};
+    color: ${style['font-color-light']};
+    font-size: 0;
+    border-radius: ${translatePxToRem(16)};
+    vertical-align: top;
+    text-align: center;
+    .iconfont {
+      vertical-align: top;
+      font-size: ${translatePxToRem(24)};
+      margin: 0 ${translatePxToRem(0)} 0 ${translatePxToRem(20)};
+    }
+    span {
+      font-size: ${translatePxToRem(34)};
+      line-height: ${translatePxToRem(100)};
     }
   }
   .img_wrapper {
@@ -129,7 +163,8 @@ export const Menu = styled.div`
   display: flex;
   justify-content: space-between;
   box-sizing: border-box;
-  padding: 0 ${translatePxToRem(60)} ${translatePxToRem(40)} ${translatePxToRem(60)};
+  padding: 0 ${translatePxToRem(60)} ${translatePxToRem(40)}
+    ${translatePxToRem(60)};
   margin: -100px 0 0 0;
   > div {
     display: flex;
