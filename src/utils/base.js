@@ -32,8 +32,12 @@ export const getFontSize = () => {
 
 
 
-export const translatePxToRem = (number) => {
+export const translatePxToRem = (num) => {
+  let number = num
   let fs = getFontSize()
+  if (typeof number !== 'number') {
+    number = number.indexOf('px')>= 0 ? number.split('px')[0] : Number(number)
+  } 
   return `${Number(number)/fs}rem`
 }
 

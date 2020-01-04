@@ -4,10 +4,11 @@ import { SongList, SongItem } from '../../style'
 import { getName, getCount } from '../../../../utils/base'
 function List(props) {
   const { albumDetail } = props
+  const { songPlay } = props
   return (
     <SongList showBackground={true}>
       <div className="first_line">
-        <div className="play_all">
+        <div className="play_all" onClick={() => songPlay()}>
           <i className="iconfont">&#xe6e3;</i>
           <span>
             {' '}
@@ -23,7 +24,7 @@ function List(props) {
       <SongItem>
         {albumDetail.tracks.map((item, index) => {
           return (
-            <li key={index}>
+            <li key={index}  onClick={() => songPlay()}>
               <span className="index">{index + 1}</span>
               <div className="info">
                 <span>{item.name}</span>
@@ -39,11 +40,12 @@ function List(props) {
   )
 }
 function SingerList(props) {
-  const { albumDetail } = props
+  const { albumDetail  } = props
+  const { songPlay } = props
   return (
     <SongList showBackground={true}>
       <div className="first_line">
-        <div className="play_all">
+        <div className="play_all" onClick={() => songPlay()}>
           <i className="iconfont">&#xe6e3;</i>
           <span>
             {' '}
@@ -54,7 +56,7 @@ function SingerList(props) {
       <SongItem>
         {albumDetail.map((item, index) => {
           return (
-            <li key={index}>
+            <li key={index} onClick={() => songPlay()}>
               <span className="index">{index + 1}</span>
               <div className="info">
                 <span>{item.name}</span>
@@ -81,10 +83,12 @@ function ListCom(props) {
 }
 ListCom.defaultProps = {
   albumDetail: {},
-  isSinger: false
+  isSinger: false,
+  songPlay: null
 }
 ListCom.propTypes = {
   albumDetail: PropTypes.object,
-  isSinger: PropTypes.bool
+  isSinger: PropTypes.bool,
+  songPlay: PropTypes.func
 }
 export default React.memo(ListCom)

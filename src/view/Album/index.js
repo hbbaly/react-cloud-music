@@ -12,8 +12,6 @@ import ListCom from './components/list'
 const HEADER_HEIGHT = 45
 
 function Album(props) {
-  console.log(props, '----------')
-
   const [showStatus, setShowStatus] = useState(true)
   const [title, setTitle] = useState('歌单')
   const [isMarquee, setIsMarquee] = useState(false) // 是否跑马灯
@@ -71,20 +69,27 @@ function Album(props) {
     },
     [singerDetail, singerSong, albumDetail]
   )
+  const { setShowMiniStatus, setPlayerList } = props
+  const { isShowMini } = props
+  const songPlay = () => {
+    if (!isShowMini) setShowMiniStatus(true)
+    let data = isSinger ? singerSong : albumDetail.tracks
+    setPlayerList(data)
+  }
   let contentCom = ''
   if (isSinger) {
     contentCom =
       !isEmptyObject(singerDetail) && !isEmptyObject(singerSong) ? (
         <div>
           <TopCom detail={singerDetail} isSinger={true} />
-          <ListCom albumDetail={singerSong} isSinger={true} />
+          <ListCom albumDetail={singerSong} isSinger={true} songPlay={songPlay}/>
         </div>
       ) : null
   } else {
     contentCom = !isEmptyObject(albumDetail) ? (
       <div>
         <TopCom albumDetail={albumDetail} />
-        <ListCom albumDetail={albumDetail} />
+        <ListCom albumDetail={albumDetail} songPlay={songPlay} />
       </div>
     ) : null
   }
@@ -117,7 +122,8 @@ const mapStateToProps = state => {
   return {
     albumDetail: state.getIn(['album', 'albumDetail']),
     singerSong: state.getIn(['album', 'singerSong']),
-    singerDetail: state.getIn(['album', 'singerDetail'])
+    singerDetail: state.getIn(['album', 'singerDetail']),
+    isShowMini: state.getIn(['album', 'isShowMini'])
   }
 }
 const mapDispatchToProps = dispatch => ({
@@ -126,6 +132,12 @@ const mapDispatchToProps = dispatch => ({
   },
   requestSingerSong(id) {
     dispatch(store.actionCreator.requestSingerSong(id))
+  },
+  setShowMiniStatus (data) {
+    dispatch(store.actionCreator.setIsShowMini(data))
+  },
+  setPlayerList (data) {
+    dispatch(store.actionCreator.setPlayerList(data))
   }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Album))
