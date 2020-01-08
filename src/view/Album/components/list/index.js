@@ -8,7 +8,7 @@ function List(props) {
   return (
     <SongList showBackground={true}>
       <div className="first_line">
-        <div className="play_all" onClick={() => songPlay()}>
+        <div className="play_all" onClick={() => songPlay(0)}>
           <i className="iconfont">&#xe6e3;</i>
           <span>
             {' '}
@@ -24,7 +24,7 @@ function List(props) {
       <SongItem>
         {albumDetail.tracks.map((item, index) => {
           return (
-            <li key={index}  onClick={() => songPlay()}>
+            <li key={index}  onClick={() => songPlay(index)}>
               <span className="index">{index + 1}</span>
               <div className="info">
                 <span>{item.name}</span>
@@ -45,7 +45,7 @@ function SingerList(props) {
   return (
     <SongList showBackground={true}>
       <div className="first_line">
-        <div className="play_all" onClick={() => songPlay()}>
+        <div className="play_all" onClick={() => songPlay(0)}>
           <i className="iconfont">&#xe6e3;</i>
           <span>
             {' '}
@@ -56,7 +56,7 @@ function SingerList(props) {
       <SongItem>
         {albumDetail.map((item, index) => {
           return (
-            <li key={index} onClick={() => songPlay()}>
+            <li key={index} onClick={() => songPlay(index)}>
               <span className="index">{index + 1}</span>
               <div className="info">
                 <span>{item.name}</span>

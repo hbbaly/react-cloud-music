@@ -34,7 +34,7 @@ const Scroll = forwardRef((props, ref) => {
   } = props
 
   const ScrollContainer = useRef()
-  const [bScroll, setBScroll] = useState()
+  const [bScroll, setBScroll] = useState(null)
 
   useEffect(() => {
     if (!ScrollContainer) {
@@ -166,14 +166,19 @@ const Scroll = forwardRef((props, ref) => {
         bScroll.scrollTo(0, 0)
       }
     },
+    scrollTo(x,y) {
+      if (bScroll) {
+        bScroll.refresh()
+        bScroll.scrollTo(x,y)
+      }
+    },
     // 给外界暴露 getBScroll 方法，提供 bs 实例
     getBScroll() {
-      console.log('hbbb', bScroll)
       if (bScroll) {
         return bScroll
       }
     }
-  }))
+  }), [bScroll])
 
   if (direction === DIRECTION_V) {
     let pullDownRefreshCom = '',

@@ -5,7 +5,7 @@ const getSingerSong = (data) => ({type: actionType.GET_SINGERS_SONG, data})
 const getSingerDetail = (data) => ({type: actionType.GET_SINGER_DETAIL, data})
 const setIsShowMini = (data) => ({type: actionType.SET_SHOW_MINI, data })
 const setPlayerList = (data) => ({type: actionType.SET_PLAYER_LIST, data})
-
+const setChooseIndex = (data) => ({type: actionType.CHOOSE_INDEX, data})
 const requestAlbumDetail = (id) => {
   return async dispatch => {
     let res = await Api.albumApi.requestAlbumDetail(id)
@@ -15,7 +15,7 @@ const requestAlbumDetail = (id) => {
 
 const requestSingerSong = (id) => {
   return async dispatch => {
-    let res = await Api.albumApi.requestSingerSong(id)
+    let res = await Api.albumApi.requestSongUrl(id)
     dispatch(getSingerDetail(res.artist))
     dispatch(getSingerSong(res.hotSongs))
   }
@@ -24,5 +24,6 @@ export default {
   requestAlbumDetail,
   requestSingerSong,
   setIsShowMini,
-  setPlayerList
+  setPlayerList,
+  setChooseIndex
 }

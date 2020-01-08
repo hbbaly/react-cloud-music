@@ -15,12 +15,66 @@ export const ListWrapper = styled.div`
     left: 0;
     width: 100%;
     height: ${translatePxToRem(900)};
-    background: #f60;
+    background: #ddd;
     .list-top{
       display: flex;
       width: 100%;
-      height: ${translatePxToRem(60)};
+      height: ${translatePxToRem(80)};
       justify-content: space-between;
+      background: #ccc;
+      .__left, .__right{
+        line-height:${translatePxToRem(80)};
+        font-size: ${translatePxToRem(28)};
+        &:hover{
+          ${global['theme-color']};
+        }
+      }
+      .__left{
+        margin-left: ${translatePxToRem(30)}
+      }
+      .__right{
+        margin-right: ${translatePxToRem(30)}
+      }
+    }
+  }
+  .list-item-wrapper{
+    overflow-y: scroll;
+    padding: 0 ${translatePxToRem(30)};
+    .list-item{
+      display: flex;
+      height: ${translatePxToRem(80)};
+      line-height: ${translatePxToRem(80)};
+      .song-name{
+        width: 50%;
+        ${global.noWrap()}
+        .item-index{
+          display: inline-block;
+          margin-right: ${translatePxToRem(8)};
+        }
+      }
+      .singer-name{
+        width: 30%;
+        ${global.noWrap()}
+      }
+      .song-duration{
+        width: 20%;
+        text-align: right;
+      }
+    }
+    .list-item-act{
+      position: relative;
+      color: ${global['theme-color']};
+      &:before{
+        content: '';
+        position:absolute;
+        top: 50%;
+        left: -${translatePxToRem(26)};
+        width: ${translatePxToRem(20)};
+        height: ${translatePxToRem(20)};
+        margin-top: -${translatePxToRem(10)};
+        background:  ${global['theme-color']};
+        border-radius: 50%;
+      }
     }
   }
 `

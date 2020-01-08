@@ -23,7 +23,7 @@ function Album(props) {
     singerSong: singerSongs,
     singerDetail: singerDetails
   } = props
-  const { requestAlbumDetail, requestSingerSong } = props
+  const { requestAlbumDetail, requestSingerSong, setChooseIndex } = props
 
   const id = props.match.params.id || 0
   let isSinger = props.match.path.indexOf('singers') >= 0
@@ -71,10 +71,12 @@ function Album(props) {
   )
   const { setShowMiniStatus, setPlayerList } = props
   const { isShowMini } = props
-  const songPlay = () => {
+  const songPlay = (index) => {
     if (!isShowMini) setShowMiniStatus(true)
     let data = isSinger ? singerSong : albumDetail.tracks
+    let ind = index || 0
     setPlayerList(data)
+    setChooseIndex(ind)
   }
   let contentCom = ''
   if (isSinger) {
@@ -138,6 +140,9 @@ const mapDispatchToProps = dispatch => ({
   },
   setPlayerList (data) {
     dispatch(store.actionCreator.setPlayerList(data))
+  },
+  setChooseIndex (index) {
+    dispatch(store.actionCreator.setChooseIndex(index))
   }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Album))

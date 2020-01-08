@@ -6,7 +6,8 @@ const defaultValue = fromJS({
   singerSong: {},
   singerDetail: {},
   isShowMini: false,
-  playerList: []
+  playerList: [],
+  chooseIndex: 0
 })
 
 const album = (state = defaultValue, action) => {
@@ -21,6 +22,8 @@ const album = (state = defaultValue, action) => {
       return state.set('isShowMini', fromJS(action.data))
     case actionType.SET_PLAYER_LIST:
       return state.set('playerList', fromJS(action.data))
+    case actionType.CHOOSE_INDEX:
+      return state.set('chooseIndex', fromJS(action.data))
     default:
       return state
   }

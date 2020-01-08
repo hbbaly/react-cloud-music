@@ -6,17 +6,11 @@ import { MiniPlayerWrapper } from './style'
 import { getName } from '../../utils/base'
 import CircleBar from './components/circleBar'
 import PlayerList from './components/list'
+import albumStore from '../Album/store'
+import store from './store'
 function Player(props) {
-  console.log(props, '======');
-  
-  const currentSong = {
-    al: {
-      picUrl:
-        'https://p1.music.126.net/JL_id1CFwNJpzgrXwemh4Q==/109951164172892390.jpg'
-    },
-    name: '木偶人',
-    ar: [{ name: '薛之谦' }]
-  }
+  const { playerList, chooseIndex, songUrl } = props
+  const { chooseItem, requestSongUrl } = props
   const [isStart, setIsStart] = useState(true)
 
   const audioStart = () => {
@@ -29,14 +23,40 @@ function Player(props) {
   const [showStatus, setShowStatus] = useState(false)
   const { isShowMini } = props
 
+  const [showList, setShowList] = useState(false)
+
+  const [songId, setSongId] = useState(0)
+
+  const [currentSong, setCurrentSong] = useState({ar: [], name: ''})
+
   useEffect(() => {
     // effect
     if (isShowMini) setShowStatus(true)
+    if (playerList.length) {
+      setSongId(playerList[chooseIndex].id)
+      requestSongUrl(playerList[chooseIndex].id)
+
+    }
     return () => {
       // cleanup
     }
-  }, [isShowMini])
+  }, [isShowMini, playerList.length, chooseIndex])
 
+  useEffect(() => {
+    if (playerList.length) {
+      let data = {
+        ar: playerList[chooseIndex].ar,
+        name: playerList[chooseIndex].name,
+        picUrl: playerList[chooseIndex].al.picUrl,
+        url: songUrl.url
+      }
+      setCurrentSong(data)
+
+    }
+    return () => {
+      
+    };
+  }, [songUrl, chooseIndex])
   const [songTime, setSongTime] = useState(0)
   const [percent, setPercent] = useState(0)
   useEffect(() => {
@@ -61,12 +81,34 @@ function Player(props) {
       // cleanup
     }
   }, [isStart])
+
+  useEffect(() => {
+    if (audioRef.current) {
+    audioRef.current.addEventListener("ended", function() {
+      // 当音轨播放完毕时候做你想做的事情
+      console.log('播放完毕');
+    });
+  }
+    return () => {
+      // cleanup
+    };
+  }, [audioRef])
   const onEntered = () => {
     setSongTime(audioRef.current.duration)
   }
-  const newCurrentTime = (e) => {
-    let percent = isNaN(e.target.currentTime/songTime) ? 0 : e.target.currentTime/songTime
+  const newCurrentTime = e => {
+    let percent = isNaN(e.target.currentTime / songTime)
+      ? 0
+      : e.target.currentTime / songTime
     setPercent(percent)
+  }
+  const closeList = (e) => {
+    e.persist();
+    // e.target.className !== 'song-name' && setShowList(false)
+    setShowList(false)
+  }
+  const openList = () => {
+    setShowList(true)
   }
   return (
     <CSSTransition
@@ -75,7 +117,7 @@ function Player(props) {
       classNames="mini"
       appear={true}
       unmountOnExit
-      onEntered={()=>onEntered()}
+      onEntered={() => onEntered()}
       // onExited={}
     >
       <div>
@@ -85,7 +127,7 @@ function Player(props) {
               className={
                 isStart ? 'player-img-rotate player-img' : 'player-img'
               }
-              src={currentSong.al.picUrl}
+              src={currentSong.picUrl}
               width="40"
               height="40"
               alt="img"
@@ -109,7 +151,7 @@ function Player(props) {
                 </i>{' '}
               </CircleBar>
             </div>
-            <div className="player-control">
+            <div className="player-control" onClick={openList}>
               <i className="iconfont">&#xe640;</i>
             </div>
           </div>
@@ -117,20 +159,37 @@ function Player(props) {
         <audio
           ref={audioRef}
           onTimeUpdate={newCurrentTime}
-          src="https://music.163.com/song/media/outer/url?id=417859631.mp3"
+          src={currentSong.url}
           autoPlay
           hidden
         ></audio>
-        <PlayerList />
+        {showList ? (
+          <PlayerList
+            list={playerList}
+            chooseIndex={chooseIndex}
+            chooseItem={chooseItem}
+            closeList={closeList}
+          />
+        ) : null}
       </div>
     </CSSTransition>
   )
 }
 const mapStateToProps = state => {
   return {
-    isShowMini: state.getIn(['album', 'isShowMini'])
+    isShowMini: state.getIn(['album', 'isShowMini']),
+    playerList: state.getIn(['album', 'playerList']).toJS(),
+    chooseIndex: state.getIn(['album', 'chooseIndex']),
+    songUrl: state.getIn(['player', 'songUrl']),
   }
 }
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+  chooseItem(index) {
+    dispatch(albumStore.actionCreator.setChooseIndex(index))
+  },
+  requestSongUrl (id) {
+    dispatch(store.actionCreator.requestSongUrl(id))
+  }
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(React.memo(Player))
