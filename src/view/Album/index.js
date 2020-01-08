@@ -71,12 +71,14 @@ function Album(props) {
   )
   const { setShowMiniStatus, setPlayerList } = props
   const { isShowMini } = props
-  const songPlay = (index) => {
+  const songPlay = (index = 0, type='list') => {
     if (!isShowMini) setShowMiniStatus(true)
     let data = isSinger ? singerSong : albumDetail.tracks
-    let ind = index || 0
     setPlayerList(data)
-    setChooseIndex(ind)
+
+    if ( type === 'list') {
+      setChooseIndex(index)
+    }
   }
   let contentCom = ''
   if (isSinger) {

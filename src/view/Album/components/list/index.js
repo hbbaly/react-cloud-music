@@ -8,7 +8,7 @@ function List(props) {
   return (
     <SongList showBackground={true}>
       <div className="first_line">
-        <div className="play_all" onClick={() => songPlay(0)}>
+        <div className="play_all" onClick={() => songPlay(0, 'all')}>
           <i className="iconfont">&#xe6e3;</i>
           <span>
             {' '}
@@ -45,7 +45,7 @@ function SingerList(props) {
   return (
     <SongList showBackground={true}>
       <div className="first_line">
-        <div className="play_all" onClick={() => songPlay(0)}>
+        <div className="play_all" onClick={() => songPlay(0, 'all')}>
           <i className="iconfont">&#xe6e3;</i>
           <span>
             {' '}

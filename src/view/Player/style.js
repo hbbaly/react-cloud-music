@@ -54,12 +54,14 @@ export const MiniPlayerWrapper = styled.div`
       font-size: ${translatePxToRem(global.font_small)};
       line-height: ${translatePxToRem(50)};
       font-weight: bold;
+      ${global.noWrap()}
     }
     .player-desc{
       height: ${translatePxToRem(50)};
       font-size: ${translatePxToRem(global.font_smaller)};
       line-height: ${translatePxToRem(50)};
       color: #666;
+      ${global.noWrap()}
     }
   }
   .player-control-wrapper{

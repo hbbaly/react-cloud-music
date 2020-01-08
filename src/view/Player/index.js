@@ -9,8 +9,8 @@ import PlayerList from './components/list'
 import albumStore from '../Album/store'
 import store from './store'
 function Player(props) {
-  const { playerList, chooseIndex, songUrl } = props
-  const { chooseItem, requestSongUrl } = props
+  const { playerList, chooseIndex, songUrl, playMode } = props
+  const { chooseItem, requestSongUrl, setPlayMode } = props
   const [isStart, setIsStart] = useState(true)
 
   const audioStart = () => {
@@ -35,7 +35,6 @@ function Player(props) {
     if (playerList.length) {
       setSongId(playerList[chooseIndex].id)
       requestSongUrl(playerList[chooseIndex].id)
-
     }
     return () => {
       // cleanup
@@ -51,7 +50,7 @@ function Player(props) {
         url: songUrl.url
       }
       setCurrentSong(data)
-
+      setPercent(0)
     }
     return () => {
       
@@ -84,15 +83,30 @@ function Player(props) {
 
   useEffect(() => {
     if (audioRef.current) {
-    audioRef.current.addEventListener("ended", function() {
-      // 当音轨播放完毕时候做你想做的事情
-      console.log('播放完毕');
-    });
-  }
+      audioRef.current.addEventListener("ended", function() {
+        // 当音轨播放完毕时候做你想做的事情
+        console.log('播放完毕');
+        // 播放下一首
+        chooseMode()
+        setPercent(0)
+      });
+      function chooseMode() {
+        if (playMode === 1) {
+          // 顺序播放
+          chooseItem(chooseIndex+1)
+        } else if (playMode === 2) {
+          // 随机
+          let index = Math.floor(Math.random() * (playerList.length))
+          chooseItem(index)
+        } else if (playMode === 3) {
+          chooseItem(chooseIndex)
+        }
+      }
+    }
     return () => {
       // cleanup
     };
-  }, [audioRef])
+  }, [audioRef.current])
   const onEntered = () => {
     setSongTime(audioRef.current.duration)
   }
@@ -109,6 +123,10 @@ function Player(props) {
   }
   const openList = () => {
     setShowList(true)
+  }
+
+  const getPlayMode = (mode = 1) => {
+    setPlayMode(mode)
   }
   return (
     <CSSTransition
@@ -169,6 +187,8 @@ function Player(props) {
             chooseIndex={chooseIndex}
             chooseItem={chooseItem}
             closeList={closeList}
+            mode={playMode}
+            getPlayMode={getPlayMode}
           />
         ) : null}
       </div>
@@ -181,6 +201,7 @@ const mapStateToProps = state => {
     playerList: state.getIn(['album', 'playerList']).toJS(),
     chooseIndex: state.getIn(['album', 'chooseIndex']),
     songUrl: state.getIn(['player', 'songUrl']),
+    playMode: state.getIn(['player', 'playMode'])
   }
 }
 const mapDispatchToProps = dispatch => ({
@@ -189,6 +210,9 @@ const mapDispatchToProps = dispatch => ({
   },
   requestSongUrl (id) {
     dispatch(store.actionCreator.requestSongUrl(id))
+  },
+  setPlayMode (mode) {
+    dispatch(store.actionCreator.setPlayMode(mode))
   }
 })
 

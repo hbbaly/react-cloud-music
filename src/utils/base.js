@@ -25,8 +25,10 @@ export const getName = list => {
 };
 
 export const getFontSize = () => {
+  // let dpr = document.getElementsByTagName('html')[0].getAttribute('data-dpr') || 1
   let fs = document.getElementsByTagName('html')[0].style.cssText.split(':')[1].split('px')[0]
   fs = fs.replace(/^\s+|\s+$/g, '')
+  // return fs/dpr * 2
   return fs
 }
 

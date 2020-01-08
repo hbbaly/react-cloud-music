@@ -15,7 +15,7 @@ const requestAlbumDetail = (id) => {
 
 const requestSingerSong = (id) => {
   return async dispatch => {
-    let res = await Api.albumApi.requestSongUrl(id)
+    let res = await Api.albumApi.requestSingerSong(id)
     dispatch(getSingerDetail(res.artist))
     dispatch(getSingerSong(res.hotSongs))
   }

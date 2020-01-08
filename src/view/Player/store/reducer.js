@@ -2,7 +2,8 @@ import actionType from './actionType'
 import { fromJS } from 'immutable'
 const defaultValue = fromJS({
   isShowMini: false,
-  songUrl: {}
+  songUrl: {},
+  playMode: 1
 })
 const player = (state = defaultValue, action) => {
   switch (action.type) {
@@ -10,6 +11,8 @@ const player = (state = defaultValue, action) => {
       return state.set('isShowMini', action.data)
     case actionType.GET_SONG_URL:
       return state.set('songUrl', action.data)
+    case actionType.SET_PLAY_MODE:
+      return state.set('playMode', action.data)
     default:
       return state
   }
