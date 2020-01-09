@@ -21,7 +21,7 @@ function Player(props) {
   const [showStatus, setShowStatus] = useState(false)
   const [songId, setSongId] = useState(0)
   const [percent, setPercent] = useState(0)
-
+  const [showNormal, setShowNormal] = useState(false)
   useEffect(() => {
     // effect
     if (isShowMini) setShowStatus(true)
@@ -128,10 +128,15 @@ function Player(props) {
   const openList = () => {
     setShowList(true)
   }
-  const getPlayMode = useCallback((mode = 1) => {
+  const getPlayMode = (mode = 1) => {
     setPlayMode(mode)
-  }, [mode])
-  
+  }
+  const showNormalPlayer = () => {
+    !showNormal && setShowNormal(true)
+  }
+  const closeNormal = () => {
+    showNormal && setShowNormal(false)
+  }
   return (
     <CSSTransition
       in={showStatus}
@@ -143,7 +148,7 @@ function Player(props) {
       // onExited={}
     >
       <MiniPlayerWrapper>
-        <div className="player-img-wrapper" ref={imgRef}>
+        <div className="player-img-wrapper" ref={imgRef} onClick={() => showNormalPlayer()}>
           <img
             className={isStart ? 'player-img-rotate player-img' : 'player-img'}
             src={currentSong.picUrl}
@@ -152,7 +157,7 @@ function Player(props) {
             alt="img"
           />
         </div>
-        <div className="player-desc-wrapper">
+        <div className="player-desc-wrapper" onClick={() => showNormalPlayer()}>
           <h2 className="player-name">{currentSong.name}</h2>
           <p className="player-desc">{getName(currentSong.ar)}</p>
         </div>
@@ -190,7 +195,7 @@ function Player(props) {
           mode={playMode}
           getPlayMode={getPlayMode}
         />
-        <NormalPlayer />
+        <NormalPlayer showNormal={showNormal} currentSong={currentSong} closeNormal={closeNormal} />
       </MiniPlayerWrapper>
     </CSSTransition>
   )

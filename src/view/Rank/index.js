@@ -6,10 +6,12 @@ import { filterIndex } from '../../utils/base'
 import { Container } from './style'
 import Scroll from '../../components/scroll'
 import OfficalList from './components/officeList'
+
 function Rank(props) {
   const { topListDetail } = props
   const { requestTopList } = props
   const { route } = props
+  
   let globalStartIndex = filterIndex(topListDetail)
   let officialList = topListDetail.slice(0, globalStartIndex)
   let globalList = topListDetail.slice(globalStartIndex)

@@ -10,6 +10,7 @@ function Recommend(props) {
 
   const { recommendSingers, bannerList } = props
   const { requestBanner, requestRecommendSingers } = props
+  
   useEffect(() => {
     Loading.open()
     const requestData = async () => {

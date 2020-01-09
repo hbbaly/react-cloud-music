@@ -1,6 +1,7 @@
 import React, { forwardRef } from "react";
 import PropTypes from "prop-types";
 import { PulldownScroller } from "./style";
+
 const PullDownCom = forwardRef((props, ref) => {
   const { beforePullDown, isPullingDown } = props;
   const refreshCom = beforePullDown ? <span>Pull Down and refresh</span> : "";

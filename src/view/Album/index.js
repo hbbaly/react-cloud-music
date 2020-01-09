@@ -71,7 +71,7 @@ function Album(props) {
   )
   const { setShowMiniStatus, setPlayerList } = props
   const { isShowMini } = props
-  const songPlay = useCallback((index = 0, type='list') => {
+  const songPlay = (index = 0, type='list') => {
     if (!isShowMini) {
       setShowMiniStatus(true)
     }
@@ -81,7 +81,7 @@ function Album(props) {
     if ( type === 'list') {
       setChooseIndex(index)
     }
-  },[index, type])
+  }
   let contentCom = ''
   if (isSinger) {
     contentCom =
