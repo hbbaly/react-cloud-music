@@ -48,8 +48,6 @@ npm i
 
 [common header](./readme/header.md 'common header')
 
-![](./readme/1.png)
-
 ## recommend 页面编写
 
 [recommend page](./readme/recommend.md 'recommend page')

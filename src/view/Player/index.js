@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import animations from 'create-keyframe-animation'
 import { connect } from 'react-redux'
 import { CSSTransition } from 'react-transition-group'
@@ -6,28 +6,21 @@ import { MiniPlayerWrapper } from './style'
 import { getName } from '../../utils/base'
 import CircleBar from './components/circleBar'
 import PlayerList from './components/list'
+import NormalPlayer from './components/normalPlayer'
 import albumStore from '../Album/store'
 import store from './store'
-function Player(props) {
-  const { playerList, chooseIndex, songUrl, playMode } = props
-  const { chooseItem, requestSongUrl, setPlayMode } = props
-  const [isStart, setIsStart] = useState(true)
 
-  const audioStart = () => {
-    setIsStart(!isStart)
-  }
+function Player(props) {
+  const { isShowMini, playerList, chooseIndex, songUrl, playMode } = props
+  const { chooseItem, requestSongUrl, setPlayMode } = props
 
   const audioRef = useRef()
   const imgRef = useRef()
 
-  const [showStatus, setShowStatus] = useState(false)
-  const { isShowMini } = props
-
   const [showList, setShowList] = useState(false)
-
+  const [showStatus, setShowStatus] = useState(false)
   const [songId, setSongId] = useState(0)
-
-  const [currentSong, setCurrentSong] = useState({ar: [], name: ''})
+  const [percent, setPercent] = useState(0)
 
   useEffect(() => {
     // effect
@@ -35,11 +28,15 @@ function Player(props) {
     if (playerList.length) {
       setSongId(playerList[chooseIndex].id)
       requestSongUrl(playerList[chooseIndex].id)
+      setPercent(0)
     }
     return () => {
       // cleanup
     }
   }, [isShowMini, playerList.length, chooseIndex])
+
+  const [currentSong, setCurrentSong] = useState({ ar: [], name: '' })
+  const [songTime, setSongTime] = useState(0)
 
   useEffect(() => {
     if (playerList.length) {
@@ -51,13 +48,16 @@ function Player(props) {
       }
       setCurrentSong(data)
       setPercent(0)
+
+      if (songUrl.url && audioRef.current.duration) {
+        setSongTime(audioRef.current.duration)
+      }
     }
-    return () => {
-      
-    };
-  }, [songUrl, chooseIndex])
-  const [songTime, setSongTime] = useState(0)
-  const [percent, setPercent] = useState(0)
+    return () => {}
+  }, [songUrl.url, chooseIndex])
+  
+  const [isStart, setIsStart] = useState(true)
+
   useEffect(() => {
     // effect
     if (audioRef.current) {
@@ -83,20 +83,20 @@ function Player(props) {
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.addEventListener("ended", function() {
+      audioRef.current.addEventListener('ended', function() {
         // 当音轨播放完毕时候做你想做的事情
-        console.log('播放完毕');
+        console.log('播放完毕')
         // 播放下一首
         chooseMode()
         setPercent(0)
-      });
+      })
       function chooseMode() {
         if (playMode === 1) {
           // 顺序播放
-          chooseItem(chooseIndex+1)
+          chooseItem(chooseIndex + 1)
         } else if (playMode === 2) {
           // 随机
-          let index = Math.floor(Math.random() * (playerList.length))
+          let index = Math.floor(Math.random() * playerList.length)
           chooseItem(index)
         } else if (playMode === 3) {
           chooseItem(chooseIndex)
@@ -105,8 +105,12 @@ function Player(props) {
     }
     return () => {
       // cleanup
-    };
+    }
   }, [audioRef.current])
+
+  const audioStart = () => {
+    setIsStart(!isStart)
+  }
   const onEntered = () => {
     setSongTime(audioRef.current.duration)
   }
@@ -116,64 +120,60 @@ function Player(props) {
       : e.target.currentTime / songTime
     setPercent(percent)
   }
-  const closeList = (e) => {
-    e.persist();
+  const closeList = e => {
+    e.persist()
     // e.target.className !== 'song-name' && setShowList(false)
     setShowList(false)
   }
   const openList = () => {
     setShowList(true)
   }
-
-  const getPlayMode = (mode = 1) => {
+  const getPlayMode = useCallback((mode = 1) => {
     setPlayMode(mode)
-  }
+  }, [mode])
+  
   return (
     <CSSTransition
       in={showStatus}
-      timeout={300}
+      timeout={500}
       classNames="mini"
       appear={true}
       unmountOnExit
       onEntered={() => onEntered()}
       // onExited={}
     >
-      <div>
-        <MiniPlayerWrapper>
-          <div className="player-img-wrapper" ref={imgRef}>
-            <img
-              className={
-                isStart ? 'player-img-rotate player-img' : 'player-img'
-              }
-              src={currentSong.picUrl}
-              width="40"
-              height="40"
-              alt="img"
-            />
+      <MiniPlayerWrapper>
+        <div className="player-img-wrapper" ref={imgRef}>
+          <img
+            className={isStart ? 'player-img-rotate player-img' : 'player-img'}
+            src={currentSong.picUrl}
+            width="40"
+            height="40"
+            alt="img"
+          />
+        </div>
+        <div className="player-desc-wrapper">
+          <h2 className="player-name">{currentSong.name}</h2>
+          <p className="player-desc">{getName(currentSong.ar)}</p>
+        </div>
+        <div className="player-control-wrapper">
+          <div className="player-control" onClick={() => audioStart()}>
+            <CircleBar radius={56} percent={percent}>
+              <i
+                className={`${
+                  isStart
+                    ? 'icon-mini iconfont icon-pause'
+                    : 'icon-mini iconfont icon-play'
+                }`}
+              >
+                &#xe650;
+              </i>{' '}
+            </CircleBar>
           </div>
-          <div className="player-desc-wrapper">
-            <h2 className="player-name">{currentSong.name}</h2>
-            <p className="player-desc">{getName(currentSong.ar)}</p>
+          <div className="player-control" onClick={openList}>
+            <i className="iconfont">&#xe640;</i>
           </div>
-          <div className="player-control-wrapper">
-            <div className="player-control" onClick={() => audioStart()}>
-              <CircleBar radius={56} percent={percent}>
-                <i
-                  className={`${
-                    isStart
-                      ? 'icon-mini iconfont icon-pause'
-                      : 'icon-mini iconfont icon-play'
-                  }`}
-                >
-                  &#xe650;
-                </i>{' '}
-              </CircleBar>
-            </div>
-            <div className="player-control" onClick={openList}>
-              <i className="iconfont">&#xe640;</i>
-            </div>
-          </div>
-        </MiniPlayerWrapper>
+        </div>
         <audio
           ref={audioRef}
           onTimeUpdate={newCurrentTime}
@@ -181,17 +181,17 @@ function Player(props) {
           autoPlay
           hidden
         ></audio>
-        {showList ? (
-          <PlayerList
-            list={playerList}
-            chooseIndex={chooseIndex}
-            chooseItem={chooseItem}
-            closeList={closeList}
-            mode={playMode}
-            getPlayMode={getPlayMode}
-          />
-        ) : null}
-      </div>
+        <PlayerList
+          list={playerList}
+          showList={showList}
+          chooseIndex={chooseIndex}
+          chooseItem={chooseItem}
+          closeList={closeList}
+          mode={playMode}
+          getPlayMode={getPlayMode}
+        />
+        <NormalPlayer />
+      </MiniPlayerWrapper>
     </CSSTransition>
   )
 }
@@ -208,10 +208,10 @@ const mapDispatchToProps = dispatch => ({
   chooseItem(index) {
     dispatch(albumStore.actionCreator.setChooseIndex(index))
   },
-  requestSongUrl (id) {
+  requestSongUrl(id) {
     dispatch(store.actionCreator.requestSongUrl(id))
   },
-  setPlayMode (mode) {
+  setPlayMode(mode) {
     dispatch(store.actionCreator.setPlayMode(mode))
   }
 })

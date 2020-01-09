@@ -12,51 +12,52 @@ export const MiniPlayerWrapper = styled.div`
   background: #fff;
   transform-origin: right bottom;
   &.mini-enter {
-    transform: translate3d (0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+    transition: transform .6s;
   }
   &.mini-enter-active {
-    transform: translate3d (0, 0, 0);
-    transition: all 0.6s;
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.6s;
   }
   &.mini-exit-active {
-    transform: translate3d (0, 100%, 0);
-    transition: all .6s
+    transform: translate3d(0, 100%, 0);
+    transition: transform 0.6s;
   }
-  .player-img-wrapper{
+  .player-img-wrapper {
     width: 20%;
-    .player-img{
+    .player-img {
       width: ${translatePxToRem(100)};
       height: ${translatePxToRem(100)};
       margin: ${translatePxToRem(20)};
       border-radius: 50%;
     }
-    .player-img-rotate{
+    .player-img-rotate {
       animation: rotate 4s linear infinite;
     }
     @keyframes rotate {
       0% {
-        transform: rotate(0deg)
+        transform: rotate(0deg);
       }
       50% {
-        transform: rotate(180deg)
+        transform: rotate(180deg);
       }
       100% {
-        transform: rotate(361deg)
+        transform: rotate(361deg);
       }
     }
   }
-  
-  .player-desc-wrapper{
+
+  .player-desc-wrapper {
     width: 50%;
     margin-top: ${translatePxToRem(20)};
-    .player-name{
+    .player-name {
       height: ${translatePxToRem(50)};
       font-size: ${translatePxToRem(global.font_small)};
       line-height: ${translatePxToRem(50)};
       font-weight: bold;
       ${global.noWrap()}
     }
-    .player-desc{
+    .player-desc {
       height: ${translatePxToRem(50)};
       font-size: ${translatePxToRem(global.font_smaller)};
       line-height: ${translatePxToRem(50)};
@@ -64,22 +65,22 @@ export const MiniPlayerWrapper = styled.div`
       ${global.noWrap()}
     }
   }
-  .player-control-wrapper{
+  .player-control-wrapper {
     display: flex;
     width: 30%;
     justify-content: space-around;
     align-items: center;
-    .player-control{
-      ${global.noWrap ()}
-      .iconfont{
+    .player-control {
+      ${global.noWrap()}
+      .iconfont {
         font-size: ${translatePxToRem(50)};
-        color: ${global['theme-color']}
+        color: ${global['theme-color']};
       }
-      .icon-mini{
+      .icon-mini {
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%,-57%);
+        transform: translate(-50%, -57%);
         font-size: ${translatePxToRem(26)};
       }
     }

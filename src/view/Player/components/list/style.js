@@ -8,71 +8,85 @@ export const ListWrapper = styled.div`
   top: 0;
   left: 0;
   z-index: 100000;
-  background: rgba(0,0,0,.1);
-  .list-content{
+  background: transparent;
+  transform-origin: right bottom;
+  &.mini-enter {
+    transform: translate3d(0, 100%, 0);
+    transition: transform 0.6s;
+  }
+  &.mini-enter-active {
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.6s;
+  }
+  &.mini-exit-active {
+    transform: translate3d(0, 100%, 0);
+    transition: transform 0.6s;
+  }
+  .list-content {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
     height: ${translatePxToRem(900)};
     background: #ddd;
-    .list-top{
+    .list-top {
       display: flex;
       width: 100%;
       height: ${translatePxToRem(80)};
       justify-content: space-between;
       background: #ccc;
-      .__left, .__right{
-        line-height:${translatePxToRem(80)};
+      .__left,
+      .__right {
+        line-height: ${translatePxToRem(80)};
         font-size: ${translatePxToRem(28)};
-        &:hover{
+        &:hover {
           ${global['theme-color']};
         }
       }
-      .__left{
-        margin-left: ${translatePxToRem(30)}
+      .__left {
+        margin-left: ${translatePxToRem(30)};
       }
-      .__right{
-        margin-right: ${translatePxToRem(30)}
+      .__right {
+        margin-right: ${translatePxToRem(30)};
       }
     }
   }
-  .list-item-wrapper{
+  .list-item-wrapper {
     overflow-y: scroll;
     padding: 0 ${translatePxToRem(30)};
-    .list-item{
+    .list-item {
       display: flex;
       height: ${translatePxToRem(80)};
       line-height: ${translatePxToRem(80)};
-      .song-name{
+      .song-name {
         width: 50%;
         ${global.noWrap()}
-        .item-index{
+        .item-index {
           display: inline-block;
           margin-right: ${translatePxToRem(8)};
         }
       }
-      .singer-name{
+      .singer-name {
         width: 30%;
         ${global.noWrap()}
       }
-      .song-duration{
+      .song-duration {
         width: 20%;
         text-align: right;
       }
     }
-    .list-item-act{
+    .list-item-act {
       position: relative;
       color: ${global['theme-color']};
-      &:before{
+      &:before {
         content: '';
-        position:absolute;
+        position: absolute;
         top: 50%;
         left: -${translatePxToRem(26)};
         width: ${translatePxToRem(20)};
         height: ${translatePxToRem(20)};
         margin-top: -${translatePxToRem(10)};
-        background:  ${global['theme-color']};
+        background: ${global['theme-color']};
         border-radius: 50%;
       }
     }

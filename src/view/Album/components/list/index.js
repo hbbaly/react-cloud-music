@@ -3,8 +3,9 @@ import PropTypes from 'prop-types'
 import { SongList, SongItem } from '../../style'
 import { getName, getCount } from '../../../../utils/base'
 function List(props) {
-  const { albumDetail } = props
+  const { albumDetail, isShowMini } = props
   const { songPlay } = props
+  
   return (
     <SongList showBackground={true}>
       <div className="first_line">
@@ -21,7 +22,7 @@ function List(props) {
           <span> 收藏 ({getCount(albumDetail.subscribedCount)})</span>
         </div>
       </div>
-      <SongItem>
+      <SongItem isShowMini={isShowMini}>
         {albumDetail.tracks.map((item, index) => {
           return (
             <li key={index}  onClick={() => songPlay(index)}>
@@ -84,11 +85,13 @@ function ListCom(props) {
 ListCom.defaultProps = {
   albumDetail: {},
   isSinger: false,
-  songPlay: null
+  songPlay: null,
+  isShowMini: false
 }
 ListCom.propTypes = {
   albumDetail: PropTypes.object,
   isSinger: PropTypes.bool,
-  songPlay: PropTypes.func
+  songPlay: PropTypes.func,
+  isShowMini: PropTypes.bool
 }
 export default React.memo(ListCom)

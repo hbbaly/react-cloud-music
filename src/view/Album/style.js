@@ -163,8 +163,7 @@ export const Menu = styled.div`
   display: flex;
   justify-content: space-between;
   box-sizing: border-box;
-  padding: 0 ${translatePxToRem(60)} ${translatePxToRem(40)}
-    ${translatePxToRem(60)};
+  padding: 0 ${translatePxToRem(60)} ${translatePxToRem(40)} ${translatePxToRem(60)};
   margin: -100px 0 0 0;
   > div {
     display: flex;
@@ -245,10 +244,17 @@ export const SongList = styled.div`
   }
 `
 export const SongItem = styled.ul`
+  padding-bottom: ${props => props.isShowMini ? `${translatePxToRem(150)}` : 0};
   > li {
+
     display: flex;
     height: ${translatePxToRem(120)};
     align-items: center;
+    &:last-child{
+      .info{
+        border: none;
+      }
+    }
     .index {
       flex-basis: ${translatePxToRem(120)};
       width: ${translatePxToRem(120)};

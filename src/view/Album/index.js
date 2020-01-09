@@ -12,12 +12,6 @@ import ListCom from './components/list'
 const HEADER_HEIGHT = 45
 
 function Album(props) {
-  const [showStatus, setShowStatus] = useState(true)
-  const [title, setTitle] = useState('歌单')
-  const [isMarquee, setIsMarquee] = useState(false) // 是否跑马灯
-
-  const headerEl = useRef()
-
   const {
     albumDetail: albumDetails,
     singerSong: singerSongs,
@@ -25,12 +19,18 @@ function Album(props) {
   } = props
   const { requestAlbumDetail, requestSingerSong, setChooseIndex } = props
 
-  const id = props.match.params.id || 0
-  let isSinger = props.match.path.indexOf('singers') >= 0
-
   let albumDetail = albumDetails.toJS()
   let singerSong = singerSongs.toJS()
   let singerDetail = singerDetails.toJS()
+
+  const [showStatus, setShowStatus] = useState(true)
+  const [title, setTitle] = useState('歌单')
+  const [isMarquee, setIsMarquee] = useState(false) // 是否跑马灯
+
+  const headerEl = useRef()
+
+  const id = props.match.params.id || 0
+  let isSinger = props.match.path.indexOf('singers') >= 0
 
   useEffect(() => {
     if (isSinger) {
@@ -71,29 +71,31 @@ function Album(props) {
   )
   const { setShowMiniStatus, setPlayerList } = props
   const { isShowMini } = props
-  const songPlay = (index = 0, type='list') => {
-    if (!isShowMini) setShowMiniStatus(true)
+  const songPlay = useCallback((index = 0, type='list') => {
+    if (!isShowMini) {
+      setShowMiniStatus(true)
+    }
     let data = isSinger ? singerSong : albumDetail.tracks
     setPlayerList(data)
 
     if ( type === 'list') {
       setChooseIndex(index)
     }
-  }
+  },[index, type])
   let contentCom = ''
   if (isSinger) {
     contentCom =
       !isEmptyObject(singerDetail) && !isEmptyObject(singerSong) ? (
         <div>
           <TopCom detail={singerDetail} isSinger={true} />
-          <ListCom albumDetail={singerSong} isSinger={true} songPlay={songPlay}/>
+          <ListCom isShowMini={isShowMini} albumDetail={singerSong} isSinger={true} songPlay={songPlay}/>
         </div>
       ) : null
   } else {
     contentCom = !isEmptyObject(albumDetail) ? (
       <div>
         <TopCom albumDetail={albumDetail} />
-        <ListCom albumDetail={albumDetail} songPlay={songPlay} />
+        <ListCom isShowMini={isShowMini} albumDetail={albumDetail} songPlay={songPlay} />
       </div>
     ) : null
   }
