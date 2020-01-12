@@ -17,6 +17,14 @@ const noWrap = () => {
     white-space: nowrap;
   `
 }
+const bgFull = () => {
+  return `
+    background-position: 50%;
+    background-size: contain;
+    background-repeat: no-repeat;
+  `
+};
+
 // 文字大小处理
 const FontSize = {
   font_largest: '44px',
@@ -53,6 +61,7 @@ const Color = {
 export default {
   extendClick,
   noWrap,
+  bgFull,
   ...FontSize,
   ...Space,
   ...Color
