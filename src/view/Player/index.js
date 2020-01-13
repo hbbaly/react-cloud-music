@@ -66,17 +66,6 @@ function Player(props) {
     }
   }, [isStart])
 
-  useEffect(() => {
-    setTimeout(() => {
-      if (songUrl.url && audioRef.current) {
-        setSongTime(audioRef.current.duration)
-      }
-    }, 200)
-    return () => {
-      // cleanup
-    }
-  }, [songUrl.url])
-
   const [play, setPlay] = useState(0)
   const chooseMode = (chooseIndex, type = 'next') => {
     if (savePlayMode.current === 1) {
@@ -101,14 +90,28 @@ function Player(props) {
   }
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.addEventListener('ended', function() {
-        // 当音轨播放完毕时候做你想做的事情
-        console.log('播放完毕')
+      const nextPlay = () => {
         let index = play + 1
         setPlay(index)
         // 播放下一首
         chooseMode(saveIndexRef.current)
         setPercent(0)
+      }
+      audioRef.current.addEventListener('ended', function() {
+        // 当音轨播放完毕时候做你想做的事情
+        console.log('播放完毕')
+        nextPlay()
+      })
+      audioRef.current.addEventListener('durationchange', function() {
+        // 当音轨加载完毕求播放时长
+        console.log('加载完毕')
+        setSongTime(audioRef.current.duration)
+      })
+      audioRef.current.addEventListener('error', function() {
+        // 在发生错误时触发
+        console.log('播放失败')
+        // 播放下一首
+        nextPlay()
       })
     }
     return () => {
@@ -134,7 +137,7 @@ function Player(props) {
     setSongTime(audioRef.current.duration)
   }
   const newCurrentTime = e => {
-    setCurrentTime(Math.floor(e.target.currentTime))
+    setCurrentTime(Math.ceil(e.target.currentTime))
     let percent = isNaN(e.target.currentTime / songTime)
       ? 0
       : e.target.currentTime / songTime

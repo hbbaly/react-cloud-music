@@ -11,7 +11,7 @@ function MiniPlayer(props) {
     <i className="icon-mini iconfont icon-play">&#xe61e;</i>
   )
   return (
-    <div class="mini-player">
+    <div className="mini-player">
       <div
         className="player-img-wrapper"
         onClick={() => showNormalPlayer()}

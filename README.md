@@ -27,8 +27,10 @@ npm i
 ## Audio相关知识
 
 [Audio参考资料](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio 'audio')
+[Audio相关事件](https://developer.mozilla.org/zh-CN/docs/Web/Guide/Events/Media_events 'handle')
 
 ## Hooks中获取最值
+
 放弃`class`改用`Hooks`, 你就要忘记`class`编码思想, 在用下去是要掉坑里面的。 
 
 比如求去最新值：
@@ -147,3 +149,5 @@ npm i redux redux-thunk redux-immutable react-redux immutable -S
 ## 其他页面
 
 其他页面也没什么问题，通过 recommend 页面我们学会了使用 redux，其他页面可以参照 recommend 页面来
+
+这里最难的应该是播放器, 那个页面了, 划分好组件, 一步步来也是没问题的。

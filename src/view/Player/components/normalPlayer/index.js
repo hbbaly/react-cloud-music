@@ -20,6 +20,7 @@ function NormalPlayer(props) {
     duration,
     percent
   } = props
+
   const {
     closeNormal,
     audioStart,
@@ -30,6 +31,7 @@ function NormalPlayer(props) {
     setPlayRate,
     changePlayTime
   } = props
+
   const rateArr = [0.5, 0.75, 1.0, 1.25, 1.5, 2.0, 3.0]
   const [rateIndex, setRateIndex] = useState(2)
 
@@ -50,8 +52,6 @@ function NormalPlayer(props) {
         transform: `translate3d(0, 0, 0) scale(1)`
       }
     }
-    console.log(animation)
-
     animations.registerAnimation({
       name: 'move',
       animation,
