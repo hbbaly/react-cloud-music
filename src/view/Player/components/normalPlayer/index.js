@@ -103,6 +103,7 @@ function NormalPlayer(props) {
     cdWrapperDom.style['transform'] = ''
     // normalPlayerRef.current.style.display = "none";
   }
+
   const [playMode, setPlayMode] = useState(1)
   const choosePlayMode = e => {
     if (playMode >= 3) {
@@ -118,6 +119,7 @@ function NormalPlayer(props) {
     let res = rateArr[index]
     setPlayRate(res)
   }
+
   const chooseMode = () => {
     let content
     if (playMode === 1) {
@@ -129,15 +131,18 @@ function NormalPlayer(props) {
     }
     return content
   }
+
   const solveTime = time => {
     let min = parseInt(time / 60),
       sec = Math.floor(time % (min * 60))
     let solve_time = time >= 60 ? `${min}:${add0(sec)}` : `0:${add0(time)}`
     return solve_time
   }
+
   const add0 = num => {
     return num >= 10 ? num : `0${num}`
   }
+  
   const barRef = useRef()
   const barWrapperRef = useRef()
   const circleRef = useRef()
