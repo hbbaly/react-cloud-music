@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import { connect } from 'react-redux'
 import { CSSTransition } from 'react-transition-group'
 import { MiniPlayerWrapper } from './style'
@@ -21,6 +21,8 @@ function Player(props) {
   const [songId, setSongId] = useState(0)
   const [percent, setPercent] = useState(0)
   const [showNormal, setShowNormal] = useState(false)
+  const saveIndexRef = useRef(0)
+  const savePlayMode = useRef(1)
   useEffect(() => {
     // effect
     if (isShowMini) setShowStatus(true)
@@ -28,6 +30,7 @@ function Player(props) {
       setSongId(playerList[chooseIndex].id)
       requestSongUrl(playerList[chooseIndex].id)
       setPercent(0)
+      saveIndexRef.current = chooseIndex
     }
     return () => {
       // cleanup
@@ -47,10 +50,6 @@ function Player(props) {
       }
       setCurrentSong(data)
       setPercent(0)
-
-      if (songUrl.url && audioRef.current.duration) {
-        setSongTime(audioRef.current.duration)
-      }
     }
     return () => {}
   }, [songUrl.url, chooseIndex])
@@ -66,10 +65,19 @@ function Player(props) {
       // cleanup
     }
   }, [isStart])
-
+  useEffect(() => {
+    setTimeout(() => {
+      if (songUrl.url && audioRef.current) {
+        setSongTime(audioRef.current.duration)
+      }
+    }, 200);
+    return () => {
+      // cleanup
+    };
+  }, [songUrl.url])
   const [play, setPlay] = useState(0)
   const chooseMode = (chooseIndex, type = 'next') => {
-    if (playMode === 1) {
+    if (savePlayMode.current === 1) {
       // 顺序播放
       let index
       if (type === 'next') {
@@ -78,12 +86,15 @@ function Player(props) {
         index = chooseIndex - 1 < 0 ? playerList.length - 1 : chooseIndex - 1
       }
       chooseItem(index)
-    } else if (playMode === 2) {
+    } else if (savePlayMode.current === 2) {
       // 随机
       let index = Math.floor(Math.random() * playerList.length)
       chooseItem(index)
-    } else if (playMode === 3) {
-      chooseItem(chooseIndex)
+    } else if (savePlayMode.current === 3) {
+      // 单曲循环
+      // chooseItem(chooseIndex)
+      audioRef.current.currentTime = 0
+      audioRef.current.play()
     }
   }
   useEffect(() => {
@@ -92,9 +103,9 @@ function Player(props) {
         // 当音轨播放完毕时候做你想做的事情
         console.log('播放完毕')
         let index = play + 1
-        setPlay(index)
+        setPlay(index)        
         // 播放下一首
-        chooseMode(chooseIndex)
+        chooseMode(saveIndexRef.current)
         setPercent(0)
       })
     }
@@ -102,7 +113,6 @@ function Player(props) {
       // cleanup
     }
   }, [audioRef.current])
-
   const audioStart = () => {
     setIsStart(!isStart)
   }
@@ -140,6 +150,7 @@ function Player(props) {
     setShowList(true)
   }
   const getPlayMode = mode => {
+    savePlayMode.current = mode
     setPlayMode(mode)
   }
   const showNormalPlayer = () => {

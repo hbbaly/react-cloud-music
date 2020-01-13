@@ -15,8 +15,14 @@ function PlayerList(props) {
     2: '随机播放',
     3: '单曲循环'
   }
-  const [playMode, setPlayMode] = useState(mode)
-
+  
+  const [playMode, setPlayMode] = useState('顺序播放')
+  useEffect(() => {
+    setPlayMode(allPlayMode[mode])
+    return () => {
+      // cleanup
+    };
+  }, [mode])
   useEffect(() => {
     // chooseIndex 改变
     if (chooseIndex >= 10 && listScroll.current) {
@@ -33,12 +39,12 @@ function PlayerList(props) {
   const choosePlayMode = e => {
     e.persist()
     e.stopPropagation()
-    if (playMode >= 3) {
+    if (mode >= 3) {
       setPlayMode(1)
       getPlayMode(1)
     } else {
-      setPlayMode(playMode + 1)
-      getPlayMode(playMode + 1)
+      setPlayMode(mode + 1)
+      getPlayMode(mode + 1)
     }
   }
   return (
@@ -54,7 +60,7 @@ function PlayerList(props) {
         <div className="list-content">
           <div className="list-top">
             <div className="__left" onClick={choosePlayMode}>
-              {allPlayMode[playMode]}
+              {playMode}
             </div>
             <div className="__right">收回</div>
           </div>
