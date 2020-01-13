@@ -24,6 +24,26 @@ npx create-react-app cloud-music
 npm i
 ```
 
+## 目录结构
+
+![目录结构](./readme/2.png)
+
+- api: 放置接口
+- assets: 静态资源
+- components: 公用组件（一般3及3个公用以上）
+- config: 环境配置
+- routes: 路由
+- store: redux
+- utils: 工具函数
+- view: 页面
+- reset.js: 重制样式
+- setupProxy.js: 本地跨域
+
+## 项目预览
+
+![首页](./readme/1.gif)
+![播放器](./readme/2.gif)
+
 ## Audio相关知识
 
 [Audio参考资料](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio 'audio')
@@ -151,3 +171,17 @@ npm i redux redux-thunk redux-immutable react-redux immutable -S
 其他页面也没什么问题，通过 recommend 页面我们学会了使用 redux，其他页面可以参照 recommend 页面来
 
 这里最难的应该是播放器, 那个页面了, 划分好组件, 一步步来也是没问题的。
+
+## react-transition-group使用
+
+[参考资料](https://reactcommunity.org/react-transition-group/css-transition)
+
+[GitHub](https://github.com/reactjs/react-transition-group)
+
+这里主要用到的事 `CSSTransition`来做一些过度的效果
+
+## create-keyframe-animation
+
+[GitHub](https://github.com/HenrikJoreteg/create-keyframe-animation)
+
+动画效果, 如全屏播放器的图片入场，退出的效果
