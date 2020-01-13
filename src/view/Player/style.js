@@ -23,6 +23,10 @@ export const MiniPlayerWrapper = styled.div`
     transform: translate3d(0, 100%, 0);
     transition: transform 0.6s;
   }
+  .mini-player{
+    display: flex;
+    width: 100%;
+  }
   .player-img-wrapper {
     width: 20%;
     .player-img {

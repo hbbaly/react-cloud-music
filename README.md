@@ -24,6 +24,19 @@ npx create-react-app cloud-music
 npm i
 ```
 
+## Audio相关知识
+
+[Audio参考资料](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio 'audio')
+
+## Hooks中获取最值
+放弃`class`改用`Hooks`, 你就要忘记`class`编码思想, 在用下去是要掉坑里面的。 
+
+比如求去最新值：
+
+在`class`中不存在这个问题, `hooks`存在,每次获取的都是当前渲染是的值, 不是最新值, 获取最新值使用ref来获取
+
+[这里有一篇非常好的文章](https://overreacted.io/zh-hans/a-complete-guide-to-useeffect/)
+
 ### 添加 styled-components
 
 [use styled-components](./readme/styled-components.md 'use styled-components')

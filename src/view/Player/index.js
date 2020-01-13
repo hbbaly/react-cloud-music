@@ -2,10 +2,9 @@ import React, { useState, useEffect, useRef, useContext } from 'react'
 import { connect } from 'react-redux'
 import { CSSTransition } from 'react-transition-group'
 import { MiniPlayerWrapper } from './style'
-import { getName } from '../../utils/base'
-import CircleBar from './components/circleBar'
 import PlayerList from './components/list'
 import NormalPlayer from './components/normalPlayer'
+import MiniPlayer from './components/miniPlayer'
 import albumStore from '../Album/store'
 import store from './store'
 
@@ -14,7 +13,6 @@ function Player(props) {
   const { chooseItem, requestSongUrl, setPlayMode } = props
 
   const audioRef = useRef()
-  const imgRef = useRef()
 
   const [showList, setShowList] = useState(false)
   const [showStatus, setShowStatus] = useState(false)
@@ -23,6 +21,7 @@ function Player(props) {
   const [showNormal, setShowNormal] = useState(false)
   const saveIndexRef = useRef(0)
   const savePlayMode = useRef(1)
+
   useEffect(() => {
     // effect
     if (isShowMini) setShowStatus(true)
@@ -40,6 +39,7 @@ function Player(props) {
   const [currentSong, setCurrentSong] = useState({ ar: [], name: '' })
   const [songTime, setSongTime] = useState(0)
   const [currentTime, setCurrentTime] = useState(0)
+
   useEffect(() => {
     if (playerList.length) {
       let data = {
@@ -65,16 +65,18 @@ function Player(props) {
       // cleanup
     }
   }, [isStart])
+
   useEffect(() => {
     setTimeout(() => {
       if (songUrl.url && audioRef.current) {
         setSongTime(audioRef.current.duration)
       }
-    }, 200);
+    }, 200)
     return () => {
       // cleanup
-    };
+    }
   }, [songUrl.url])
+
   const [play, setPlay] = useState(0)
   const chooseMode = (chooseIndex, type = 'next') => {
     if (savePlayMode.current === 1) {
@@ -103,7 +105,7 @@ function Player(props) {
         // 当音轨播放完毕时候做你想做的事情
         console.log('播放完毕')
         let index = play + 1
-        setPlay(index)        
+        setPlay(index)
         // 播放下一首
         chooseMode(saveIndexRef.current)
         setPercent(0)
@@ -138,7 +140,7 @@ function Player(props) {
       : e.target.currentTime / songTime
     setPercent(percent)
   }
-  const changePlayTime = (time) => {
+  const changePlayTime = time => {
     audioRef.current.currentTime = time
   }
   const closeList = e => {
@@ -163,11 +165,7 @@ function Player(props) {
     if (!audioRef.current) return
     audioRef.current.playbackRate = res
   }
-  let miniStatusCom = isStart ? (
-    <i className="icon-mini iconfont icon-pause">&#xe650;</i>
-  ) : (
-    <i className="icon-mini iconfont icon-play">&#xe61e;</i>
-  )
+
   return (
     <CSSTransition
       in={showStatus}
@@ -179,33 +177,14 @@ function Player(props) {
       // onExited={}
     >
       <MiniPlayerWrapper>
-        <div
-          className="player-img-wrapper"
-          ref={imgRef}
-          onClick={() => showNormalPlayer()}
-        >
-          <img
-            className={isStart ? 'player-img-rotate player-img' : 'player-img'}
-            src={currentSong.picUrl}
-            width="40"
-            height="40"
-            alt="img"
-          />
-        </div>
-        <div className="player-desc-wrapper" onClick={() => showNormalPlayer()}>
-          <h2 className="player-name">{currentSong.name}</h2>
-          <p className="player-desc">{getName(currentSong.ar)}</p>
-        </div>
-        <div className="player-control-wrapper">
-          <div className="player-control" onClick={() => audioStart()}>
-            <CircleBar radius={56} percent={percent}>
-              {miniStatusCom}
-            </CircleBar>
-          </div>
-          <div className="player-control" onClick={openList}>
-            <i className="iconfont">&#xe640;</i>
-          </div>
-        </div>
+        <MiniPlayer
+          isStart={isStart}
+          currentSong={currentSong}
+          percent={percent}
+          showNormalPlayer={showNormalPlayer}
+          audioStart={audioStart}
+          openList={openList}
+        />
         <audio
           ref={audioRef}
           onTimeUpdate={newCurrentTime}
