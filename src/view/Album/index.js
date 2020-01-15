@@ -9,6 +9,7 @@ import style from '../../assets/global'
 import store from './store'
 import TopCom from './components/top'
 import ListCom from './components/list'
+import MusicAnimation from '../../components/musicAnimation'
 const HEADER_HEIGHT = 45
 
 function Album(props) {
@@ -71,7 +72,8 @@ function Album(props) {
   )
   const { setShowMiniStatus, setPlayerList } = props
   const { isShowMini } = props
-  const songPlay = (index = 0, type='list') => {
+  const songPlay = (index = 0, type='list', e) => {
+    e.persist()
     if (!isShowMini) {
       setShowMiniStatus(true)
     }
@@ -81,6 +83,12 @@ function Album(props) {
     if ( type === 'list') {
       setChooseIndex(index)
     }
+    music_animation(e)
+  }
+  const musicRef = useRef()
+  const music_animation = (e) => {
+    let x = e.nativeEvent.clientX, y = e.nativeEvent.clientY
+    musicRef.current.startAnimation({ x, y })
   }
   let contentCom = ''
   if (isSinger) {
@@ -119,6 +127,7 @@ function Album(props) {
         <Scroll listenScroll={true} onScroll={headerScroll}>
           {contentCom}
         </Scroll>
+        <MusicAnimation ref={musicRef} />
       </Container>
     </CSSTransition>
   )

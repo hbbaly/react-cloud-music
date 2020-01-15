@@ -2,17 +2,22 @@ import styled from 'styled-components'
 import global from '../../assets/global'
 import { translatePxToRem } from '../../utils/base'
 export const PickerWrapper = styled.div`
-  /* position: fixed;
-  left: 0;
-  top: ${translatePxToRem(100)};
-  z-index: 100; */
+  position: relative;
   width: 100%;
   height: ${translatePxToRem(800)};
   overflow: hidden;
   text-align: center;
   font-size: ${translatePxToRem(28)};
-  /* background-color: rgba(37, 38, 45, 0.4); */
   background: transparent;
+  .wrapper{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+  }
   .picker-footer {
     height: ${translatePxToRem(40)};
   }
@@ -112,6 +117,9 @@ export const WheelWrapper = styled.div`
         color: #333;
         &.wheel-disabled-item {
           opacity: 0.2;
+        }
+        &_act{
+          color: ${global['theme-color']};
         }
       }
     }

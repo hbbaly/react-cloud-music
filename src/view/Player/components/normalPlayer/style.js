@@ -122,6 +122,9 @@ export const PlayerTop = styled(FlexBox)`
   .song-lyric{
     text-align: left;
   }
+  .song-detail-tab_act,.song-lyric_act{
+    color: ${global['theme-color']}
+  }
   .close-normal{
     width: 20%;
     text-align: center;

@@ -7,13 +7,18 @@ import React, {
   useImperativeHandle
 } from 'react'
 import PropTypes from 'prop-types'
-import { PickerWrapper, PickerPanelWrapper, PickerContentWrapper, WheelWrapper } from './style'
+import {
+  PickerWrapper,
+  PickerPanelWrapper,
+  PickerContentWrapper,
+  WheelWrapper
+} from './style'
 import BScroll from '@better-scroll/core'
 import WheelScroll from '@better-scroll/wheel'
 
 BScroll.use(WheelScroll)
 
-const Wheel = (props) => {
+const Wheel = props => {
   const { data, index: selectedIndex } = props
   const wheelRef = useRef()
   const pickerRef = useRef()
@@ -34,7 +39,7 @@ const Wheel = (props) => {
       probeType: 3
     })
     pickerRef.current.on('scrollEnd', () => {
-      console.log('滚动结束');
+      console.log('滚动结束')
     })
   }, [data.length])
   const show = useCallback(() => {
@@ -45,19 +50,19 @@ const Wheel = (props) => {
       pickerRef.current.enable()
       pickerRef.current.wheelTo(selectedIndex)
     }
-  },[data.length])
+  }, [data.length])
   useEffect(() => {
     show()
     return () => {
       // cleanup
-    };
+    }
   }, [data.length, wheelRef.current])
   useEffect(() => {
-    if (!pickerRef.current) return 
+    if (!pickerRef.current) return
     pickerRef.current.wheelTo(selectedIndex, 200)
     return () => {
       // cleanup
-    };
+    }
   }, [selectedIndex])
   const isMoving = () => {
     return pickerRef.current.pending
@@ -70,13 +75,14 @@ const Wheel = (props) => {
   const refresh = () => {
     setTimeout(() => {
       pickerRef.current.refresh()
-    }, 0);
+    }, 0)
   }
   const wheelTo = () => {
     pickerRef.current.wheelTo(selectedIndex, 200)
   }
   return (
     <PickerWrapper onClick="_cancel">
+      <div className="wrapper"></div>
       <PickerPanelWrapper>
         {/* <div className="picker-choose border-bottom-1px">
           <span className="cancel" onClick="_cancel">
@@ -88,8 +94,8 @@ const Wheel = (props) => {
           <h1 className="picker-title">Title</h1>
         </div> */}
         <PickerContentWrapper>
-          <div className="mask-top border-bottom-1px"></div>
-          <div className="mask-bottom border-top-1px"></div>
+          {/* <div className="mask-top border-bottom-1px"></div>
+          <div className="mask-bottom border-top-1px"></div> */}
           <WheelWrapper>
             <div className="wheel" ref={wheelRef}>
               <ul className="wheel-scroll">
@@ -99,6 +105,8 @@ const Wheel = (props) => {
                     className={
                       item.disabled
                         ? 'wheel-item wheel-disabled-item'
+                        : index === selectedIndex
+                        ? 'wheel-item wheel-item_act'
                         : 'wheel-item'
                     }
                   >

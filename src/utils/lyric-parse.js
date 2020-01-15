@@ -128,6 +128,7 @@ export default class Lyric {
   }
 
   stop() {
+    console.log(this.timer, 'hbbbbbbbbbbbbbb');
     this.state = STATE_PAUSE
     clearTimeout(this.timer)
   }

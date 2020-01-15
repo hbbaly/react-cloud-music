@@ -70,8 +70,6 @@ function Player(props) {
 
   const [play, setPlay] = useState(0)
   const chooseMode = (chooseIndex, type = 'next') => {
-    console.log(play, '==========');
-    
     if (savePlayMode.current === 1) {
       // 顺序播放
       let index
@@ -135,16 +133,21 @@ function Player(props) {
     let arrLyric = lyric.size !== 0 ? lyric : []
     // effect
     if (arrLyric.length) {
-      lyricRef.current = new Lyric(lyric, (obj) => {
-        console.log(obj, '--------');
-        if (obj.all) {
-          setLyricAll(obj.all)
-        } else {
-          // 设置歌词的位置
-          setLyricPos(obj.index)
-        }
-      })
-      lyricRef.current.togglePlay()
+      if (lyricRef.current) {
+        lyricRef.current.stop()
+        // lyricRef.current.seek(0)
+        lyricRef.current = null
+      }
+        lyricRef.current = new Lyric(lyric, (obj) => {
+          console.log(obj, '--------');
+          if (obj.all) {
+            setLyricAll(obj.all)
+          } else {
+            // 设置歌词的位置
+            setLyricPos(obj.index)
+          }
+        })
+        lyricRef.current.togglePlay()
     }
     
     return () => {
@@ -152,8 +155,6 @@ function Player(props) {
     };
   }, [lyric])
   const audioStart = () => {
-    console.log(currentTime, '========');
-    
     setIsStart(!isStart)
     lyricRef.current.togglePlay()
   }

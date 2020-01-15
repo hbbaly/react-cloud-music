@@ -168,6 +168,7 @@ function NormalPlayer(props) {
     }
   }, [percent])
   const slideRef = useRef()
+  const [currentPageIndex, setCurrentPageIndex] = useState(0)
   useEffect(() => {
     if (!slideRef.current) return 
     let slide = new BScroll(slideRef.current, {
@@ -182,6 +183,9 @@ function NormalPlayer(props) {
       bounce: false,
       stopPropagation: true,
       probeType: 2
+    })
+    slide.on('slideWillChange', (page) => {
+      setCurrentPageIndex(page.pageX)
     })
     return () => {
       // cleanup
@@ -246,8 +250,8 @@ function NormalPlayer(props) {
             <div className="close-normal" onClick={() => closeNormal()}>
               <i className="iconfont icon-back">&#xe662;</i>
             </div>
-            <div className="song-detail-tab">歌曲</div>
-            <div className="song-lyric">歌词</div>
+            <div className={currentPageIndex === 0 ? "song-detail-tab song-detail-tab_act" : "song-detail-tab"}>歌曲</div>
+            <div className={currentPageIndex === 1 ? "song-lyric song-lyric_act" : "song-lyric"}>歌词</div>
           </PlayerTop>
           <div className="slide-banner-scroll" ref={slideRef}>
             <div className="slide-banner-wrapper">
