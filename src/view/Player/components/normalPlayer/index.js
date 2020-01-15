@@ -10,7 +10,13 @@ import {
   ProcressBar,
   BarWrapper
 } from './style'
+
 import { getName } from '../../../../utils/base'
+import Wheel from '../../../../components/wheel'
+import BScroll from '@better-scroll/core'
+import Slide from '@better-scroll/slide'
+
+  BScroll.use(Slide)
 function NormalPlayer(props) {
   const {
     showNormal,
@@ -18,7 +24,9 @@ function NormalPlayer(props) {
     isStart,
     currentTime,
     duration,
-    percent
+    percent,
+    index,
+    lyric
   } = props
 
   const {
@@ -29,7 +37,8 @@ function NormalPlayer(props) {
     getPlayMode,
     openList,
     setPlayRate,
-    changePlayTime
+    changePlayTime,
+    changeLyricLine
   } = props
 
   const rateArr = [0.5, 0.75, 1.0, 1.25, 1.5, 2.0, 3.0]
@@ -158,7 +167,26 @@ function NormalPlayer(props) {
       // cleanup
     }
   }, [percent])
-
+  const slideRef = useRef()
+  useEffect(() => {
+    if (!slideRef.current) return 
+    let slide = new BScroll(slideRef.current, {
+      scrollX: true,
+      scrollY: false,
+      slide: {
+        loop: false,
+        threshold: 100
+      },
+      useTransition: true,
+      momentum: false,
+      bounce: false,
+      stopPropagation: true,
+      probeType: 2
+    })
+    return () => {
+      // cleanup
+    };
+  }, [lyric, slideRef.current])
   const progressClick = e => {
     e.persist()
     let barLeft = barRef.current.getBoundingClientRect()
@@ -221,11 +249,19 @@ function NormalPlayer(props) {
             <div className="song-detail-tab">歌曲</div>
             <div className="song-lyric">歌词</div>
           </PlayerTop>
-          <div className="cd-wrapper" ref={cdWrapperRef}>
-            <Rotate
-              className="song-img"
-              src={currentSong.picUrl + '?param=400x400'}
-            ></Rotate>
+          <div className="slide-banner-scroll" ref={slideRef}>
+            <div className="slide-banner-wrapper">
+              {/* <div class="slide-item page1">page 1</div> */}
+              <div className="slide-item cd-wrapper" ref={cdWrapperRef}>
+                <Rotate
+                  className="song-img"
+                  src={currentSong.picUrl + '?param=400x400'}
+                ></Rotate>
+              </div>
+              <div className="slide-item lyric-wrapper">
+                <Wheel data={lyric} index={index} changeLyricLine={changeLyricLine}/>
+              </div>
+            </div>
           </div>
           <div className="song-name">
             {currentSong.name} - {getName(currentSong.ar)}
@@ -303,7 +339,10 @@ NormalPlayer.defaultProps = {
   currentTime: 0,
   duration: 0,
   percent: 0,
-  changePlayTime: null
+  changePlayTime: null,
+  index: 0,
+  lyric: [],
+  changeLyricLine: null
 }
 NormalPlayer.propTypes = {
   showNormal: PropTypes.bool,
@@ -319,6 +358,9 @@ NormalPlayer.propTypes = {
   currentTime: PropTypes.number,
   duration: PropTypes.number,
   percent: PropTypes.number,
-  changePlayTime: PropTypes.func
+  changePlayTime: PropTypes.func,
+  index: PropTypes.number,
+  lyric: PropTypes.array,
+  changeLyricLine: PropTypes.func,
 }
 export default React.memo(NormalPlayer)

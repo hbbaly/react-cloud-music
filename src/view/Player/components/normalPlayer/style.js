@@ -37,6 +37,23 @@ export const PlayerWrapper = styled(PositionBox)`
     transform: translate3d(0, 100%, 0);
     transition: transform 0.3s;
   }
+  .slide-banner-scroll{
+    min-height: 1px;
+    overflow: hidden;
+    .slide-banner-wrapper{
+      height: ${translatePxToRem(750)};
+      white-space: nowrap;
+      font-size: 0;
+      .slide-item{
+        display: inline-block;
+        /* height: ${translatePxToRem(675)}; */
+        width: 100%;
+        /* text-align: center; */
+        margin-top: -${translatePxToRem(125)};
+        font-size: 26px;
+      }
+    }
+  }
   .player-wrapper {
     position: relative;
     width: 100%;
@@ -133,7 +150,7 @@ export const Rotate = styled.img.attrs(props => ({
   animation: ${rotate} 20s linear infinite;
   width: ${translatePxToRem(540)};
   height: ${translatePxToRem(540)};
-  margin: ${translatePxToRem(100)} auto ${translatePxToRem(80)};
+  margin: ${translatePxToRem(20)} auto ${translatePxToRem(80)};
   border-radius: 50%;
   transform-origin: center center;
 `

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { CSSTransition } from 'react-transition-group'
 import { MiniPlayerWrapper } from './style'
@@ -7,13 +7,15 @@ import NormalPlayer from './components/normalPlayer'
 import MiniPlayer from './components/miniPlayer'
 import albumStore from '../Album/store'
 import store from './store'
-
+import Lyric from '../../utils/lyric-parse'
 function Player(props) {
-  const { isShowMini, playerList, chooseIndex, songUrl, playMode } = props
-  const { chooseItem, requestSongUrl, setPlayMode } = props
+  const { isShowMini, playerList, chooseIndex, songUrl, playMode, lyric } = props
+  const { chooseItem, requestSongUrl, setPlayMode, requestSongLyric } = props
 
   const audioRef = useRef()
 
+  const [lyricAll, setLyricAll] = useState([])
+  const [lyricPos, setLyricPos] = useState(0)
   const [showList, setShowList] = useState(false)
   const [showStatus, setShowStatus] = useState(false)
   const [songId, setSongId] = useState(0)
@@ -68,6 +70,8 @@ function Player(props) {
 
   const [play, setPlay] = useState(0)
   const chooseMode = (chooseIndex, type = 'next') => {
+    console.log(play, '==========');
+    
     if (savePlayMode.current === 1) {
       // 顺序播放
       let index
@@ -118,8 +122,40 @@ function Player(props) {
       // cleanup
     }
   }, [audioRef.current])
+
+  useEffect(() => {
+    // effect
+    requestSongLyric(songId)
+    return () => {
+      // cleanup
+    };
+  }, [songId])
+  const lyricRef = useRef()
+  useEffect(() => {
+    let arrLyric = lyric.size !== 0 ? lyric : []
+    // effect
+    if (arrLyric.length) {
+      lyricRef.current = new Lyric(lyric, (obj) => {
+        console.log(obj, '--------');
+        if (obj.all) {
+          setLyricAll(obj.all)
+        } else {
+          // 设置歌词的位置
+          setLyricPos(obj.index)
+        }
+      })
+      lyricRef.current.togglePlay()
+    }
+    
+    return () => {
+      // cleanup
+    };
+  }, [lyric])
   const audioStart = () => {
+    console.log(currentTime, '========');
+    
     setIsStart(!isStart)
+    lyricRef.current.togglePlay()
   }
   const audioNext = () => {
     let index = play + 1
@@ -145,6 +181,7 @@ function Player(props) {
   }
   const changePlayTime = time => {
     audioRef.current.currentTime = time
+    lyricRef.current.seek(time*1000)
   }
   const closeList = e => {
     e.persist()
@@ -168,7 +205,13 @@ function Player(props) {
     if (!audioRef.current) return
     audioRef.current.playbackRate = res
   }
-
+  const changeLyricLine = (line) => {
+    let time  = lyricAll[line].time
+    // if (audioRef.current) audioRef.current.currentTime = time
+    console.log(time);
+    // setPercent(time / songTime)
+    
+  }
   return (
     <CSSTransition
       in={showStatus}
@@ -219,6 +262,9 @@ function Player(props) {
           currentTime={currentTime}
           percent={percent}
           changePlayTime={changePlayTime}
+          index={lyricPos}
+          lyric={lyricAll}
+          changeLyricLine={changeLyricLine}
         />
       </MiniPlayerWrapper>
     </CSSTransition>
@@ -230,7 +276,8 @@ const mapStateToProps = state => {
     playerList: state.getIn(['album', 'playerList']).toJS(),
     chooseIndex: state.getIn(['album', 'chooseIndex']),
     songUrl: state.getIn(['player', 'songUrl']),
-    playMode: state.getIn(['player', 'playMode'])
+    playMode: state.getIn(['player', 'playMode']),
+    lyric: state.getIn(['player', 'lyric'])
   }
 }
 const mapDispatchToProps = dispatch => ({
@@ -242,6 +289,9 @@ const mapDispatchToProps = dispatch => ({
   },
   setPlayMode(mode) {
     dispatch(store.actionCreator.setPlayMode(mode))
+  },
+  requestSongLyric (id) {
+    dispatch(store.actionCreator.requestSongLyric(id))
   }
 })
 

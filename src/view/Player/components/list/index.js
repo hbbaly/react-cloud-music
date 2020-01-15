@@ -25,16 +25,16 @@ function PlayerList(props) {
   }, [mode])
   useEffect(() => {
     // chooseIndex 改变
-    if (chooseIndex >= 10 && listScroll.current) {
+    if (chooseIndex >= 10) {
       // 延迟，拿到bScroll
       setTimeout(() => {
-        listScroll.current.scrollTo(0, -(chooseIndex * 2 - 5) * 40)
+        if (listScroll.current) listScroll.current.scrollTo(0, -(chooseIndex * 2 - 5) * 40)
       }, 0)
     }
     return () => {
       // cleanup
     }
-  }, [chooseIndex])
+  }, [chooseIndex, listScroll.current])
 
   const choosePlayMode = e => {
     e.persist()

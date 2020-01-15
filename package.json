@@ -7,6 +7,8 @@
     "@better-scroll/core": "^2.0.0-beta.2",
     "@better-scroll/pull-down": "^2.0.0-beta.2",
     "@better-scroll/pull-up": "^2.0.0-beta.2",
+    "@better-scroll/slide": "^2.0.0-beta.4",
+    "@better-scroll/wheel": "^2.0.0-beta.4",
     "@svgr/webpack": "4.3.3",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
