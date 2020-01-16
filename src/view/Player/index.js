@@ -134,14 +134,15 @@ function Player(props) {
     // effect
     if (arrLyric.length) {
       if (lyricRef.current) {
+        lyricRef.current.seek(0)
         lyricRef.current.stop()
-        // lyricRef.current.seek(0)
         lyricRef.current = null
       }
         lyricRef.current = new Lyric(lyric, (obj) => {
           console.log(obj, '--------');
           if (obj.all) {
             setLyricAll(obj.all)
+            setLyricPos(0)
           } else {
             // 设置歌词的位置
             setLyricPos(obj.index)
@@ -205,11 +206,11 @@ function Player(props) {
   const setPlayRate = res => {
     if (!audioRef.current) return
     audioRef.current.playbackRate = res
+    lyricRef.current.changeSpeed(res)
   }
   const changeLyricLine = (line) => {
     let time  = lyricAll[line].time
     // if (audioRef.current) audioRef.current.currentTime = time
-    console.log(time);
     // setPercent(time / songTime)
     
   }

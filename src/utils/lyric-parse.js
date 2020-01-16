@@ -16,13 +16,14 @@ function noop() {
 }
 
 export default class Lyric {
-  constructor(lrc, hanlder = noop) {
+  constructor(lrc, hanlder = noop, speed = 1) {
     this.lrc = lrc
     this.tags = {}
     this.lines = []
     this.handler = hanlder
     this.state = STATE_PAUSE
     this.curLine = 0
+    this.speed = speed
 
     this._init()
   }
@@ -93,9 +94,11 @@ export default class Lyric {
       if (this.curNum < this.lines.length && this.state === STATE_PLAYING) {
         this._playRest()
       }
-    }, delay)
+    }, delay / this.speed)
   }
-
+  changeSpeed (speed) {
+    this.speed = speed
+  }
   play(startTime = 0, skipLast) {
     if (!this.lines.length) {
       return
@@ -128,12 +131,14 @@ export default class Lyric {
   }
 
   stop() {
-    console.log(this.timer, 'hbbbbbbbbbbbbbb');
     this.state = STATE_PAUSE
     clearTimeout(this.timer)
   }
 
   seek(offset) {
     this.play(offset)
+  }
+  status () {
+    return this.state
   }
 }

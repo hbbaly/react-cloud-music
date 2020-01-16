@@ -16,7 +16,7 @@ function Recommend(props) {
     const requestData = async () => {
       if (!bannerList.size) await requestBanner()
       if (!recommendSingers.size) await requestRecommendSingers()
-      Loading.close()
+      // Loading.close()
     }
     requestData()
     return () => {}
