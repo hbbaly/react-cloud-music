@@ -76,3 +76,20 @@ export function prefixStyle(style) {
   }
   return vendor + style.charAt(0).toUpperCase() + style.substr(1);
 }
+
+export const debouncePro = function (func, delay, mustRunTime=100) {
+  let timer, now
+  return function () {
+    let cur = new Date().getTime()
+    let context = this, args = arguments
+    if (!now) now = cur
+    if (cur - now >= mustRunTime * 1000) {
+      func.apply(context, args)
+      now = cur
+    } else {
+      timer = setTimeout(function () {
+        func.apply(context, args)
+      }, delay)
+    }
+  }
+}

@@ -5,6 +5,7 @@ import Recommend from '../view/Recommend'
 import Singers from '../view/Singers'
 import Rank from '../view/Rank'
 import Album from '../view/Album'
+import Search from '../view/Search'
 export default [
   {
     path: '/',
@@ -24,8 +25,14 @@ export default [
           {
             path: "/recommend/:id",
             component: Album
-          }
+          } 
         ]
+      },
+      {
+        path: "/search",
+        exact: true,
+        key: "search",
+        component: Search
       },
       {
         path: "/singers",
